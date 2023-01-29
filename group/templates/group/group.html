@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+    <script>
+        function sendMail() {
+            var yourMessage = 'message';
+            var subject = 'subject';
+            var emails = ['andytwoods@gmail.com', 'andtwoods@mail.com']
+            document.location.href = "mailto:?subject="
+                + encodeURIComponent(subject)
+                + "&body=" + encodeURIComponent(yourMessage)
+                + "&bcc=" + emails.join(',');
+        }
+    </script>
+
+    <button onclick="sendMail()">send</button>
+    {% for member in group.members.all %}
+        {{ member.email }}
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,86 @@
+{% load static i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Online Lab{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    {% block rollbar %}
+        {% if not debug %}
+        {% endif %}
+    {% endblock rollbar %}
+
+    {% include 'favicon.html' %}
+
+    {% if debug %}
+        <script>
+        if (typeof window.htmx !== "undefined") {
+        htmx.on("htmx:afterSettle", function(detail) {
+        if (
+        typeof window.djdt !== "undefined"
+        && detail.target instanceof HTMLBodyElement
+        ) {
+        djdt.show_toolbar();
+        }
+        });
+        }
+        </script>
+    {% endif %}
+
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    {% block css %}
+    {% endblock %}
+
+    {% block head %}
+    {% endblock %}
+
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+{% block menu %}
+    <header>
+        {% include 'menu.html' %}
+    </header>
+{% endblock %}
+
+
+    <div class="container mt-5 main-element">
+        <div class="mb-3">
+            {% block heading %}
+            {% endblock heading %}
+        </div>
+
+
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+
+{% block modal %}{% endblock modal %}
+
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% block javascript %}
+{% endblock javascript %}
+
+
+<footer class="mt-5 mb-5 pb-2">
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</footer>
+
+
+</body>
+
+</html>
