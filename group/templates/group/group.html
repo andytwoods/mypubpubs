@@ -1,22 +1,17 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %} Home {% endblock %}
 
 {% block content %}
-    <script>
-        function sendMail() {
-            var yourMessage = 'message';
-            var subject = 'subject';
-            var emails = ['andytwoods@gmail.com', 'andtwoods@mail.com']
-            document.location.href = "mailto:?subject="
-                + encodeURIComponent(subject)
-                + "&body=" + encodeURIComponent(yourMessage)
-                + "&bcc=" + emails.join(',');
-        }
-    </script>
 
-    <button onclick="sendMail()">send</button>
-    {% for member in group.members.all %}
-        {{ member.email }}
-    {% endfor %}
+    <h1>{{ group.title }}!</h1>
+    <h4>{{ group.description }}</h4>
+    <div class="row">
+        <p>Please enter your email address below. We will ask the Admins to approve you. Thanks!</p>
+        {% csrf_token %}
+        {% crispy form %}
+    </div>
+
+
 {% endblock content %}

@@ -1,0 +1,6 @@
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form }}
+    <input type="hidden" name="next" id="id_next" value="{% url 'home' %}">
+    <button type="submit">Submit</button>
+</form>

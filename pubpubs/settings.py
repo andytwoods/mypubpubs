@@ -31,12 +31,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+
+    'mailauth',
+
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.admin',
     'django.contrib.staticfiles',
+
+    'django_extensions',
+    'crispy_forms',
+    "crispy_bootstrap5",
+    #"anymail",
+
     'users',
     'group',
 ]
@@ -102,6 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'mailauth.backends.MailAuthBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -129,3 +141,22 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
+
+# ANYMAIL = {
+#     # (exact settings here depend on your ESP...)
+#     "MAILGUN_API_KEY": "<your Mailgun key>",
+#     "MAILGUN_SENDER_DOMAIN": 'mg.example.com',  # your Mailgun domain, if needed
+# }
+# EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"  # or sendgrid.EmailBackend, or...
+# DEFAULT_FROM_EMAIL = "pub@pubpubs.pub"  # if you don't already have this in settings
+# SERVER_EMAIL = DEFAULT_FROM_EMAIL  # ditto (default from-email for Django errors)
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+#EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+DEFAULT_FROM_EMAIL = "pub <pub@pubpubs.pub>"
+
+EMAIL_SITE = DEFAULT_FROM_EMAIL
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

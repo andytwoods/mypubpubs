@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+    {% if admin_of_groups %}
+        <h2>You are an admin of these groups</h2>
+        <div class="row mb-5">
+            {% for groupadmin in admin_of_groups %}
+                <div class="col-3 mb-3 mb-sm-0">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title"><a
+                                    href="{% url 'group' groupadmin.group.uuid %}">{{ groupadmin.group.title }}</a>
+                            </h5>
+                            <p class="card-text">{{ groupadmin.group.description }}</p>
+                            <div class="btn-toolbar justify-content-between" role="toolbar"
+                                 aria-label="Toolbar with button groups">
+                                <div class="btn-group me-2" role="group" aria-label="First group">
+                                    <a target="_blank" href="{{ groupadmin.group.make_email }}" class="btn btn-primary">
+                                        Generate email</a>
+                                </div>
+                                <div class="btn-group" role="group" aria-label="Third group">
+                                    <a href="{% url 'admin-group-edit' groupadmin.group.uuid %}" class="btn">
+                                        <i class="fa-solid fa-gear"></i> edit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if group_memberships %}
+        <h2>You are a member of these groups</h2>
+        <div class="row">
+            {% for member in group_memberships %}
+                <div class="col-3 mb-3 mb-sm-0">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title"><a
+                                    href="">{{ member.group.title }}</a>
+                            </h5>
+                            <p class="card-text">{{ member.group.description }}</p>
+                            <div class="btn-toolbar justify-content-between" role="toolbar"
+                                 aria-label="Toolbar with button groups">
+                                {% if member.group.members_can_email_all %}
+                                    <div class="btn-group me-2" role="group" aria-label="First group">
+                                        <a target="_blank" href="{{ member.group.make_email }}" class="btn btn-primary">
+                                            Email all</a>
+                                    </div>
+                                {% endif %}
+                                <div class="btn-group me-2" role="group" aria-label="First group">
+                                    <a target="_blank" href="{{ member.group.make_admin_email }}" class="btn btn-primary">
+                                        Email admin</a>
+                                </div>
+                                <div class="btn-group" role="group" aria-label="Third group">
+                                    <a href="" class="btn">
+                                        <i class="fa-solid fa-gear"></i> prefs</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock content %}

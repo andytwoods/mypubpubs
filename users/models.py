@@ -1,6 +1,6 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
+from mailauth.contrib.user.models import AbstractEmailUser
 
 
-class User(AbstractUser):
-    email = models.EmailField("email address", primary_key=True)
+class User(AbstractEmailUser):
+    pass

@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('banana/', admin.site.urls),
+    path('accounts/', include('mailauth.urls')),
     path('', include('group.urls'))
 ]
