@@ -9,10 +9,8 @@ def tell_admin_signup(email: str, group: Group):
     admins_emails = group.admins_emails()
 
     link = reverse('accept_person', kwargs={'email': email})
-    message = f'''To accept them, please follow this link: {link}. Otherwise, please just ignore this message.'''
-    html_message = f'''
-To accept them, please follow this <a href='{link}'>link</a>: . Otherwise, please just ignore this message.
-    '''
+    message = f'To accept them, please follow this link: {link}.'
+    html_message = f'To accept them, please follow this <a href="{link}">link</a>.'
     send_mail(
         subject=f"{email} requested to join '{group.title}'",
         message=message,
@@ -29,7 +27,7 @@ def let_new_user_know_added(group, email):
         subject=f"Admins have added you to: '{group.title}'",
         message=message,
         from_email=settings.EMAIL_SITE,
-        recipient_list=email,
+        recipient_list=[email],
         html_message=message,
         fail_silently=False,
     )

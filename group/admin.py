@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from group.models import Group, GroupUserThru, GroupAdminThru
+from group.models import Group, GroupUserThru, GroupAdminThru, DomainNames
 
 
 class GroupUserThruInline(admin.TabularInline):
@@ -19,3 +19,9 @@ class GroupAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Group, GroupAdmin)
+
+
+class DomainNamesAdmin(admin.ModelAdmin):
+    list_display = ('domain', )
+
+admin.site.register(DomainNames, DomainNamesAdmin)

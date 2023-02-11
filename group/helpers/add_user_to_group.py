@@ -5,11 +5,14 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-def add_user_to_group(email, group: Group):
+def add_user_to_group(email, group: Group, status: GroupUserThru.StatusChoices):
     user, created = User.objects.get_or_create(email=email)
     if created:
         user.save()
-    groupuser, created = GroupUserThru.objects.get_or_create(user=user, group=group)
+    group_user, joined_group = GroupUserThru.objects.get_or_create(user=user, group=group)
     if created:
-        groupuser.save()
+        group_user.status = status
+        group_user.save()
         let_new_user_know_added(group, email)
+
+    return group_user, joined_group

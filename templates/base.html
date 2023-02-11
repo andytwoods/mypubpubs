@@ -57,6 +57,21 @@
     <header>
         {% include 'menu.html' %}
     </header>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="custom-alert alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible wow bounce"
+                 role="alert">
+                <button type="button" class="d-inline-block btn btn-small btn-transparent p-0 m-0 mr-3"
+                        data-dismiss="alert"
+                        aria-label="Close">
+                    <span aria-hidden="true" class="h2">&times;</span>
+                </button>
+                <span class="h6">
+      {{ message }}
+    </span>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 

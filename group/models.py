@@ -15,7 +15,16 @@ class AbstractGroupUserThru(TimeStampedModel):
 
 
 class GroupUserThru(AbstractGroupUserThru):
-    enabled = models.BooleanField(default=True)
+    class StatusChoices(models.TextChoices):
+        WAITING_FOR_OK = 'WA', _('Waiting for admins to OK')
+        ACTIVE = 'AC', _('Active member')
+        BANNED = 'BA', _('Banned')
+
+    status = models.CharField(
+        max_length=2,
+        choices=StatusChoices.choices,
+        default=StatusChoices.WAITING_FOR_OK,
+    )
 
 
 class GroupAdminThru(AbstractGroupUserThru):
@@ -29,7 +38,14 @@ def generate_message(group):
     ***Visit www.pubpubs.pub/group/{group.uuid}/ to join this group if you were forwarded this message***
     ***You can delete your link to this group there too, or set up a SNOOZE period***
     """
-    return message #'%0D'.join(message.splitlines())
+    return message  # '%0D'.join(message.splitlines())
+
+
+class DomainNames(models.Model):
+    domain = models.TextField(max_length=64, blank=False, null=False)
+
+    def __str__(self):
+        return self.domain
 
 
 class Group(TimeStampedModel):
@@ -40,6 +56,8 @@ class Group(TimeStampedModel):
     admins = models.ManyToManyField('users.User', related_name='admins', through=GroupAdminThru)
 
     members_can_email_all = models.BooleanField(default=False)
+
+    safe_domains = models.ManyToManyField(DomainNames)
 
     class FieldChoices(models.TextChoices):
         BCC = 'BC', _('BCC')

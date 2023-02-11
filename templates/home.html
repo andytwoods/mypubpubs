@@ -8,8 +8,8 @@
         <h2>You are an admin of these groups</h2>
         <div class="row mb-5">
             {% for groupadmin in admin_of_groups %}
-                <div class="col-3 mb-3 mb-sm-0">
-                    <div class="card" style="width: 100%;">
+                <div class="col-md-4 col-sm-12 mb-3">
+                    <div class="card bg-light shadow" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title"><a
                                     href="{% url 'group' groupadmin.group.uuid %}">{{ groupadmin.group.title }}</a>
@@ -37,8 +37,8 @@
         <h2>You are a member of these groups</h2>
         <div class="row">
             {% for member in group_memberships %}
-                <div class="col-3 mb-3 mb-sm-0">
-                    <div class="card" style="width: 100%;">
+                <div class="col-md-4 col-sm-12 mb-3">
+                    <div class="card bg-light shadow" style="width: 100%;">
                         <div class="card-body">
                             <h5 class="card-title"><a
                                     href="">{{ member.group.title }}</a>
