@@ -149,8 +149,7 @@ class Group(TimeStampedModel):
 
         return mailto_txt
 
-    def authorise_users(self, user_ids_str):
-        user_ids = make_list(user_ids_str)
+    def authorise_users(self, user_ids):
         for user_id in user_ids:
             gu: GroupUserThru = GroupUserThru.objects.get(group=self, user__id=user_id)
             gu.status = StatusChoices.ACTIVE
