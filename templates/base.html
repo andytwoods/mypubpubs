@@ -1,5 +1,4 @@
-{% load static i18n %}
-
+{% load static i18n django_htmx %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +51,7 @@
 
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 {% block menu %}
     <header>
         {% include 'menu.html' %}
@@ -91,6 +90,7 @@
 
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/htmx.min.js' %}"></script>
 {% block javascript %}
 {% endblock javascript %}
 
@@ -100,7 +100,6 @@
         {% include 'footer.html' %}
     {% endblock %}
 </footer>
-
 
 </body>
 

@@ -1,0 +1,3 @@
+
+class InvitedBannedUser(BaseException):
+    pass

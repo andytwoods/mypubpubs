@@ -1,11 +1,11 @@
 from django.core.mail import send_mail
 from django.urls import reverse
 
-from group.models import Group
+from group.model_choices import StatusChoices
 from django.conf import settings
 
 
-def tell_admin_signup(email: str, group: Group):
+def tell_admin_signup(email: str, group):
     admins_emails = group.admins_emails()
 
     link = reverse('accept_person', kwargs={'email': email})
@@ -21,10 +21,18 @@ def tell_admin_signup(email: str, group: Group):
     )
 
 
-def let_new_user_know_added(group, email):
-    message = 'Yay :) Visit www.pubpubs.pub to edit your membership, or delete your account.'
+def let_new_user_know_added(group, email, status: StatusChoices):
+    match status:
+        case StatusChoices.ACTIVE:
+            message = 'Yay :) Visit www.pubpubs.pub to edit your membership, or delete your account.'
+        case StatusChoices.INVITED:
+            message = f'Hi! Admin have invited you to join the group {group.title}'
+        case _:
+            message = ''
+            raise Exception()
+
     send_mail(
-        subject=f"Admins have added you to: '{group.title}'",
+        subject=f"A message about the group: '{group.title}'",
         message=message,
         from_email=settings.EMAIL_SITE,
         recipient_list=[email],

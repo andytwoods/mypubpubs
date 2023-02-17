@@ -1,18 +1,17 @@
-from email._header_value_parser import Domain
-
 from django.contrib import messages
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
-# Create your views here.
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
 from django.views.generic import UpdateView
+from django_htmx.http import HttpResponseClientRefresh
 from mailauth.forms import EmailLoginForm
 
 from group.forms import GroupAdminForm, JoinGroupForm
-from group.helpers.add_user_to_group import add_user_to_group
 from group.helpers.email import tell_admin_signup
-from group.models import Group, GroupUserThru, GroupAdminThru, DomainNames
+from group.model_choices import StatusChoices
+from group.models import Group, GroupUserThru, GroupAdminThru
 
 
 def send_login_email(user, request):
@@ -29,8 +28,6 @@ def group(request, uuid):
     if request.POST:
         form = JoinGroupForm(request.POST)
         if form.is_valid():
-            # requested_to_join = form.data.get('requested_to_join')
-            # print(requested_to_join,33)
 
             email = form.data.get('email')
             domain_info = email.split('@')
@@ -42,19 +39,19 @@ def group(request, uuid):
                 messages.success(request, message)
 
             if domain_info[1] in safe_domains:
-                groupuser, joined_group = add_user_to_group(email, my_group, GroupUserThru.StatusChoices.ACTIVE)
+                groupuser, joined_group = my_group.add_user(email, StatusChoices.ACTIVE)
                 if joined_group:
                     on_active_member(groupuser, "Congrats, you've been added to the group!")
                 else:
                     on_active_member(groupuser, "You already are a part of this group!")
             else:
-                groupuser, joined_group = add_user_to_group(email, my_group, GroupUserThru.StatusChoices.WAITING_FOR_OK)
-                if groupuser.status is GroupUserThru.StatusChoices.ACTIVE:
+                groupuser, joined_group = my_group.add_user(email, StatusChoices.WAITING_FOR_OK)
+                if groupuser.status is StatusChoices.ACTIVE:
                     on_active_member(groupuser, "You already are a part of this group!")
                 else:
                     tell_admin_signup(email, my_group)
                     messages.success(request, 'We have sent your details to the admins :)')
-            return redirect(reverse('home'))
+            return request.path
     context = {'group': my_group,
                'form': JoinGroupForm()}
     return render(request, 'group/group.html', context=context)
@@ -63,28 +60,15 @@ def group(request, uuid):
 def home(request):
     context = {}
     if request.user.is_authenticated:
-        context['group_memberships'] = GroupUserThru.objects.filter(user=request.user). \
-            select_related('group')
-        context['admin_of_groups'] = GroupAdminThru.objects.filter(user=request.user). \
-            select_related('group'). \
-            prefetch_related('user')
+
+        context['admin_of_groups'] = GroupAdminThru.admin_of_which_groups(request.user)
+
+        for label, status in [('group_memberships', StatusChoices.ACTIVE),
+                              ('waiting_memberships', StatusChoices.WAITING_FOR_OK),
+                              ('ok_invitation', StatusChoices.INVITED)]:
+            context[label] = GroupUserThru.retrieve_groups_given_status(request.user, status)
+
     return render(request, 'home.html', context=context)
-
-
-def make_list(val: str):
-    val = ','.join(val.splitlines())
-    val = ','.join(val.split(';'))
-    val = ''.join(val.split(' '))
-    return [x for x in val.split(',') if len(x) > 0]
-
-
-def add_safe_domains(new_safe_domains, group: Group):
-    already_exists = list(group.safe_domains.all())
-    for new_safe_domain in new_safe_domains:
-        if new_safe_domain not in already_exists:
-            dm = DomainNames(domain=new_safe_domain)
-            dm.save()
-            group.safe_domains.add(dm)
 
 
 class GroupPrefs(UpdateView):
@@ -97,7 +81,7 @@ class GroupPrefs(UpdateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_anonymous:
-            messages.error(self.request, 'Oops, you are not logged in.')
+            messages.error(self.request, 'Oops, yÏou are not logged in.')
             return redirect('home')
         try:
             GroupAdminThru.objects.get(user=self.request.user, group__uuid=self.kwargs.get('uuid'))
@@ -113,10 +97,12 @@ class GroupPrefs(UpdateView):
     def form_valid(self, form):
         outcome = super().form_valid(form)
 
-        new_safe_domains = make_list(form.data['add_safe_domains'])
-        add_safe_domains(new_safe_domains, self.get_object())
+        group: Group = self.get_object()
+        group.add_safe_domains(form.cleaned_data['add_safe_domains'])
+        group.authorise_users(form.cleaned_data['requested_to_join'])
+        group.ban_users(form.cleaned_data['add_banned'])
 
-        invited = make_list(form.data['invite_people'])
+        group.invite(form.data['invite_people'])
 
         return outcome
 
@@ -127,6 +113,38 @@ def add_person(request, uuid, email):
     if request.user not in group.admins:
         messages.error(request, 'You are not an admin of this group')
     else:
-        add_user_to_group(email, group, GroupUserThru.StatusChoices.ACTIVE)
+        group.add_user(email, StatusChoices.ACTIVE)
         messages.success(request, f'added {email} to the group!')
     return None
+
+
+@login_required
+@require_http_methods(['POST'])
+def htmx_home_commands(request):
+    match request.POST.get('command'):
+        case 'accept-invitation':
+            GroupUserThru.accept_invitation(request.user, request.POST.get('group_uuid'))
+            messages.success(request, 'Successfully added you to group!')
+        case 'decline-invitation':
+            GroupUserThru.decline_invitation(request.user, request.POST.get('group_uuid'))
+        case 'check-new-people':
+            group_uuid = request.POST.get('group_uuid')
+            my_group: Group = Group.objects.get(uuid=group_uuid)
+            if not my_group.check_is_admin(request.user):
+                raise Http404
+            found = GroupUserThru.check_new_people_needing_permission(group_uuid)
+            if found:
+                context = {
+                    'group_uuid': group_uuid,
+                    'found': found
+                }
+                return render(request, template_name='partials/waiting_to_join.html', context=context)
+            else:
+                return HttpResponse('')
+        case 'cancel-join-request':
+            group_uuid = request.POST.get('group_uuid')
+            GroupUserThru.cancel_join_request(request.user, group_uuid)
+            return HttpResponseClientRefresh()
+        case _:
+            raise Exception('unknown htmx command')
+    return HttpResponseClientRefresh()

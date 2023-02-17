@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-!x@s*ykqozc#57*r^o_#l67ssqpjrk0wdkixo2971f%gjze$9g
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -41,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.staticfiles',
 
+    'django_htmx',
     'django_extensions',
     'crispy_forms',
     "crispy_bootstrap5",
-    #"anymail",
+    # "anymail",
 
     'users',
     'group',
@@ -58,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'pubpubs.urls'
@@ -81,7 +81,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pubpubs.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -91,7 +90,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -126,7 +124,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -152,7 +149,7 @@ AUTH_USER_MODEL = "users.User"
 # SERVER_EMAIL = DEFAULT_FROM_EMAIL  # ditto (default from-email for Django errors)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-#EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 DEFAULT_FROM_EMAIL = "pub <pub@pubpubs.pub>"
 
@@ -160,3 +157,6 @@ EMAIL_SITE = DEFAULT_FROM_EMAIL
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# coverage run ./manage.py test
+# coverage report
