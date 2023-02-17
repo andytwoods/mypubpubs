@@ -23,7 +23,6 @@ class TestHome(TestCase):
         for key in home_context_vars:
             self.assertTrue(key in response.context)
 
-
     def test_group_via_status(self):
         user = UserFactory()
         group = GroupFactory()
@@ -50,3 +49,16 @@ class TestHome(TestCase):
 
         self.assertEqual(found.count(), 1)
 
+    def test_admin_edit_group(self):
+        response = self.client.get(reverse('admin-group-edit', kwargs={'uuid': '79adfebf-4305-4cea-a016-f0b58a2228b7'}))
+        self.assertRedirects(response, reverse('home'))
+
+        group = GroupFactory()
+        response = self.client.get(reverse('admin-group-edit', kwargs={'uuid': group.uuid}))
+        self.assertRedirects(response, reverse('home'))
+
+        user = UserFactory()
+        group.admins.add(user)
+        self.client.force_login(user)
+        response = self.client.get(reverse('admin-group-edit', kwargs={'uuid': group.uuid}))
+        self.assertEqual(response.status_code, 200)
