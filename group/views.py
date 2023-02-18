@@ -148,6 +148,11 @@ def htmx_home_commands(request):
             group_uuid = request.POST.get('group_uuid')
             GroupUserThru.cancel_join_request(request.user, group_uuid)
             return HttpResponseClientRefresh()
+        case 'leave-group':
+            group_uuid = request.POST.get('group_uuid')
+            GroupUserThru.objects.get(user=request.user, group__uuid=group_uuid).delete()
+            messages.success(request, 'Successfully removed you from the group')
+            return HttpResponseClientRefresh()
         case _:
             raise Exception('unknown htmx command')
     return HttpResponseClientRefresh()

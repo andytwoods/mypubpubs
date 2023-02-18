@@ -52,7 +52,7 @@
                                 {% if member.group.members_can_email_all %}
                                     <div class="btn-group me-2" role="group" aria-label="First group">
                                         <a target="_blank" href="{{ member.group.make_email }}" class="btn btn-primary">
-                                            Email all</a>
+                                            generate email</a>
                                     </div>
                                 {% endif %}
                                 <div class="btn-group me-2" role="group" aria-label="First group">
@@ -61,8 +61,32 @@
                                         Email admin</a>
                                 </div>
                                 <div class="btn-group" role="group" aria-label="Third group">
-                                    <a href="" class="btn">
-                                        <i class="fa-solid fa-gear"></i> edit</a>
+                                    <!-- Example single danger button -->
+                                    <div class="btn-group">
+                                        <button type="button" class="btn dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            Options
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+
+                                     <button class='dropdown-item text-danger' hx-trigger='confirmed'
+                                             hx-vals='{"group_uuid": "{{ member.group.uuid }}", "command": "leave-group"}'
+                                             hx-post="{% url 'htmx_group_commands' %}"
+                                             _="on click
+                                                call Swal.fire({title: 'Confirm', text:'Are you sure?'})
+                                                if result.isConfirmed trigger confirmed">
+                                         Leave group
+</button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
