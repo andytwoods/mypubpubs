@@ -1,26 +1,24 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
 
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="navbar-brand" href="{% url 'home' %}"> <img src="{% static 'favicon/favicon-32x32.png' %}"
-                                                                      height="48" alt="PubPubs.Pub"></a>
-            </li>
-        </ul>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}"> <img src="{% static 'favicon/favicon-32x32.png' %}"
+                                                              height="48" alt="PubPubs.Pub"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <li class="nav-content collapse navbar-collapse" id="navbarSupportedContent">
-
-            <ul class="navbar-nav ml-auto">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                </li>
                 {% if request.user.is_authenticated %}
-
                     <li class="nav-item">
                         <a class="nav-link" href="">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'preferences' %}">Preferences</a>
                     </li>
 
                     <li class="nav-item">
@@ -36,10 +34,8 @@
                         <a id="sign-up-link" class="btn btn-orange btn-alpha" role="button" href="">Sign
                             Up</a>
                     </li>
-
                 {% endif %}
             </ul>
-        </li>
+        </div>
     </div>
-
 </nav>

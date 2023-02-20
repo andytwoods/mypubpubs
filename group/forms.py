@@ -1,10 +1,36 @@
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Submit, Div, HTML
+from crispy_forms.layout import Layout, Row, Column, Submit, HTML
 from django import forms
+from django.contrib.auth import get_user_model
 
 from group.model_choices import StatusChoices
-from group.models import Group, GroupUserThru
+from group.models import Group
+
+User = get_user_model()
+
+
+class PreferencesForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["email", ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["email"].help_text = 'Be careful changing your address! If you enter an incorrect address you' \
+                                         'will be locked out of your account.'
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(Column("email", css_class='col-md-4')),
+            Row(
+                Column(
+                    Submit("submit", "Update", css_class="my-4 btn-lg"),
+                ),
+                css_class="justify-content-center",
+            ),
+        )
 
 
 class JoinGroupForm(forms.Form):
@@ -67,8 +93,8 @@ class GroupAdminForm(forms.ModelForm):
                                                                        'in these domains will be automatically added'}
 
         self.fields['add_banned'].widget.attrs = {'rows': 2,
-                                                        'placeholder': 'enter comma/tab/line seperated email addresses'
-                                                                       ' to ban.'}
+                                                  'placeholder': 'enter comma/tab/line seperated email addresses'
+                                                                 ' to ban.'}
 
         self.helper = FormHelper()
         row_css = 'bg-light rounded shadow mb-3'

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
@@ -8,7 +9,7 @@ from django.views.generic import UpdateView
 from django_htmx.http import HttpResponseClientRefresh
 from mailauth.forms import EmailLoginForm
 
-from group.forms import GroupAdminForm, JoinGroupForm
+from group.forms import GroupAdminForm, JoinGroupForm, PreferencesForm
 from group.helpers.email import tell_admin_signup
 from group.model_choices import StatusChoices
 from group.models import Group, GroupUserThru, GroupAdminThru
@@ -153,6 +154,24 @@ def htmx_home_commands(request):
             GroupUserThru.objects.get(user=request.user, group__uuid=group_uuid).delete()
             messages.success(request, 'Successfully removed you from the group')
             return HttpResponseClientRefresh()
+        case 'delete-account':
+            user = request.user
+            logout(request)
+            user.delete()
+            return HttpResponseClientRefresh()
+            #
         case _:
             raise Exception('unknown htmx command')
     return HttpResponseClientRefresh()
+
+
+@login_required
+def preferences(request):
+    if request.POST:
+        form = PreferencesForm(request.POST)
+
+    else:
+        form = PreferencesForm(instance=request.user)
+
+    context = {'form': form, }
+    return render(request, template_name='group/preferences.html', context=context)
