@@ -10,6 +10,7 @@ urlpatterns = [
     path('group/<uuid:uuid>/add/<str:email>/', views.add_person, name='accept_person'),
     path('preferences/', views.preferences, name='preferences'),
     path('htmx_home_commands/', views.htmx_home_commands, name='htmx_group_commands'),
+    path('htmx_modal/', views.htmx_modal, name='htmx_modal'),
 
 ]
 

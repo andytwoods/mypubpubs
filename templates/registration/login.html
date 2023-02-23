@@ -1,6 +1,30 @@
-<form method="post" novalidate>
-    {% csrf_token %}
-    {{ form }}
-    <input type="hidden" name="next" id="id_next" value="{% url 'home' %}">
-    <button type="submit">Submit</button>
-</form>
+{% extends 'base.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block css %}
+<style>
+input {
+    width: 300px;
+}
+</style>
+{% endblock css %}
+
+{% block content %}
+
+    <h1>Login</h1>
+    <div>Enter your email address and we will send you a one use short-lived login link.</div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="mt-4">
+                    <input type="hidden" name="next" id="id_next" value="{% url 'home' %}">
+                    <button class='btn btn-primary' type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

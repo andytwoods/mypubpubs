@@ -175,3 +175,12 @@ def preferences(request):
 
     context = {'form': form, }
     return render(request, template_name='group/preferences.html', context=context)
+
+
+@require_http_methods(['GET'])
+def htmx_modal(request):
+    match request.GET.get('command'):
+        case 'login':
+            return redirect('mailauth:login')
+
+    raise Exception('unknown htmx modal request')
