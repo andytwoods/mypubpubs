@@ -85,7 +85,7 @@ class GroupPrefs(UpdateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_anonymous:
-            messages.error(self.request, 'Oops, yÏou are not logged in.')
+            messages.error(self.request, 'Oops, you are not logged in.')
             return redirect('home')
         try:
             GroupAdminThru.objects.get(user=self.request.user, group__uuid=self.kwargs.get('uuid'))
@@ -102,6 +102,7 @@ class GroupPrefs(UpdateView):
         outcome = super().form_valid(form)
 
         group: Group = self.get_object()
+        group.remove_users_not_in_this_list(form.cleaned_data['members'])
         group.add_safe_domains(form.cleaned_data['add_safe_domains'])
         group.authorise_users(form.cleaned_data['requested_to_join'])
         group.ban_users(form.cleaned_data['add_banned'])
@@ -166,7 +167,7 @@ def htmx_home_commands(request):
 
 
 @login_required
-def preferences(request):
+def user_preferences(request):
     if request.POST:
         form = PreferencesForm(request.POST)
 

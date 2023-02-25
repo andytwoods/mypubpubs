@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from group.factories import GroupUserThruFactory, GroupFactory, GroupAdminThruFactory
 from group.model_choices import StatusChoices
-from group.models import GroupUserThru, GroupAdminThru
+from group.models import GroupUserThru, GroupAdminThru, Group
 from group.views import home_context_info
 from users.factories import UserFactory
 
@@ -62,3 +62,24 @@ class TestHome(TestCase):
         self.client.force_login(user)
         response = self.client.get(reverse('admin-group-edit', kwargs={'uuid': group.uuid}))
         self.assertEqual(response.status_code, 200)
+
+
+class TestModels(TestCase):
+
+    def test_remove_users(self):
+        group: Group = GroupFactory()
+
+        safe_user = UserFactory()
+        bad_user1 = UserFactory()
+        bad_user2 = UserFactory()
+
+        for user in [safe_user, bad_user1, bad_user2]:
+            u = GroupUserThruFactory(group=group, user=user)
+            u.save()
+
+        self.assertEqual(GroupUserThru.objects.filter(group=group).count(), 3)
+
+        removed = group.remove_users_not_in_this_list([safe_user.id, ])
+        self.assertEqual(len(removed), 2)
+        self.assertCountEqual(removed, [bad_user1.email, bad_user2.email, ])
+

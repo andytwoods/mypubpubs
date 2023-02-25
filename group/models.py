@@ -1,5 +1,6 @@
 from urllib import parse
 
+from django.contrib import messages
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
@@ -175,6 +176,12 @@ class Group(TimeStampedModel):
             gu.save()
         pass
 
+    def remove_users_not_in_this_list(self, user_ids):
+        to_remove = GroupUserThru.objects.filter(group=self).exclude(user__in=user_ids).select_related('user')
+        found = [groupuser.user.email for groupuser in to_remove]
+        to_remove.delete()
+        return found
+
     def invite(self, invite_emails_str):
         for email in make_list(invite_emails_str):
             self.add_user(email, StatusChoices.INVITED)
@@ -199,7 +206,6 @@ class Group(TimeStampedModel):
     def check_is_admin(self, user: User):
         exists = user in self.admins.all()
         return exists
-
 
 def encode(str):
     return parse.quote(str, safe='~()*!\'')

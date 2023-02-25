@@ -75,8 +75,10 @@ class GroupAdminForm(forms.ModelForm):
         self.fields['description'].widget.attrs = {'rows': 2}
 
         my_members = group.members.filter(groupuserthru__status=StatusChoices.ACTIVE)
-        self.fields['members'].choices = [(u.id, u.email) for u in my_members]
-        self.fields['members'].help_text = 'Select those who you want to stop being members'
+        members = self.fields['members']
+        members.choices = [(u.id, u.email) for u in my_members]
+        members.initial = [u.id for u in my_members]
+        members.help_text = 'Deselect those who you want to stop being members'
 
         my_asked = group.members.filter(groupuserthru__status=StatusChoices.WAITING_FOR_OK)
         asked_users = [(u.id, u.email) for u in my_asked]
