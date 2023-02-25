@@ -1,0 +1,52 @@
+{% if group_memberships %}
+    <h2>You are a member of these groups</h2>
+    <div class="row">
+        {% for member in group_memberships %}
+            <div class="{{ card_class }}">
+                <div class="card bg-light shadow" style="width: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title"><a
+                                href="">{{ member.group.title }}</a>
+                        </h5>
+                        <p class="card-text">{{ member.group.description }}</p>
+
+                        {% if member.group.members_can_email_all %}
+                            {% include 'group/generate_email.html' with email_info=member.group.make_email %}
+                        {% endif %}
+
+                        <button type="button" class="btn dropdown-toggle float-end"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            Options
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+
+                                <a target="_blank" href="{{ member.group.make_admin_email }}"
+                                   class="dropdown-item btn btn-primary">
+                                    Generate an email for admin</a>
+
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+
+                                <button class='dropdown-item text-danger' hx-trigger='confirmed'
+                                        hx-vals='{"group_uuid": "{{ member.group.uuid }}", "command": "leave-group"}'
+                                        hx-post="{% url 'htmx_group_commands' %}"
+                                        _="on click
+                                                call Swal.fire({title: 'Confirm', text:'Are you sure?'})
+                                                if result.isConfirmed trigger confirmed">
+                                    Leave group
+                                </button>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+   
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
