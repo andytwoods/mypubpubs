@@ -1,6 +1,7 @@
-
 from pathlib import Path
+
 import factory
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,6 +37,8 @@ INSTALLED_APPS = [
 
     'users',
     'group',
+    'hijack',
+    'hijack.contrib.admin',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    'hijack.middleware.HijackUserMiddleware',
 ]
 
 ROOT_URLCONF = 'pubpubs.urls'
@@ -149,3 +153,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # coverage run ./manage.py test
 # coverage report
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

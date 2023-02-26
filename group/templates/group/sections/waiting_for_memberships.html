@@ -1,0 +1,26 @@
+{% if waiting_memberships %}
+    <h2>You have requested to become a member of these groups</h2>
+    <div class="row mb-5">
+        {% for member in waiting_memberships %}
+            <div class="{{ card_class }}">
+                <div class="card bg-light shadow" style="width: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ member.group.title }}
+                        </h5>
+                        <p class="card-text">{{ member.group.description }}</p>
+                        <div class="badge bg-dark-subtle d-inline-block mt-2">{{ member.get_status_display }}
+                        </div>
+                        <div class="float-end">
+                            <button class="btn btn-sm btn-danger p-0"
+                                    hx-post="{% url 'htmx_group_commands' %}"
+                                    hx-vals='{"group_uuid": "{{ member.group.uuid }}", "command": "cancel-join-request"}'
+                                    hx-confirm="Are you sure you wish to remove your request to join?"
+                            >cancel?
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
