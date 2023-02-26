@@ -3,7 +3,7 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
-
+    {% include 'cookieconsent.html' %}
     {% if admin_of_groups %}
         <h2>You are an admin of these groups</h2>
         <div class="row mb-5">
