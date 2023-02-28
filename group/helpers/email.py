@@ -22,17 +22,20 @@ def tell_admin_signup(email: str, group):
 
 
 def let_new_user_know_added(group, email, status: StatusChoices):
+
     match status:
         case StatusChoices.ACTIVE:
-            message = 'Yay :) Visit www.pubpubs.pub to edit your membership, or delete your account.'
+            subject = f"A message about the group: '{group.title}'"
+            message = f'Yay :) Visit { settings.WEBSITE } to edit your membership, or delete your account.'
         case StatusChoices.INVITED:
-            message = f'Hi! Admin have invited you to join the group {group.title}'
+            subject = f"You have been invited to join this group: '{group.title}'"
+            message = f'Hi! Admin have invited you to join the group {group.title}. To accept or decline, or stop ' \
+                      f'receiving any messages about groups in the future, please visit { settings.WEBSITE }.'
         case _:
-            message = ''
             raise Exception()
 
     send_mail(
-        subject=f"A message about the group: '{group.title}'",
+        subject=subject,
         message=message,
         from_email=settings.EMAIL_SITE,
         recipient_list=[email],

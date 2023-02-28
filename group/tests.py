@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
 
@@ -6,6 +8,8 @@ from group.model_choices import StatusChoices
 from group.models import GroupUserThru, GroupAdminThru, Group
 from group.views import home_context_info
 from users.factories import UserFactory
+
+User = get_user_model()
 
 
 class TestHome(TestCase):
@@ -22,21 +26,6 @@ class TestHome(TestCase):
         response = self.client.get(reverse('home'))
         for key in home_context_vars:
             self.assertTrue(key in response.context)
-
-    def test_group_via_status(self):
-        user = UserFactory()
-        group = GroupFactory()
-
-        found = GroupUserThru.retrieve_groups_given_status(user=user, status=StatusChoices.ACTIVE)
-        self.assertEqual(found.count(), 0)
-
-        gu: GroupUserThru = GroupUserThruFactory(user=user, group=group, status=StatusChoices.ACTIVE)
-
-        self.assertEqual(found.count(), 1)
-
-        gu.status = StatusChoices.INVITED
-        gu.save()
-        self.assertEqual(found.count(), 0)
 
     def test_admin_of(self):
         user = UserFactory()
@@ -83,3 +72,85 @@ class TestModels(TestCase):
         self.assertEqual(len(removed), 2)
         self.assertCountEqual(removed, [bad_user1.email, bad_user2.email, ])
 
+
+class TestGroupUserThru(TestCase):
+
+    def test_accept_invitation(self):
+        group: Group = GroupFactory()
+        user: User = UserFactory()
+        gu: GroupUserThru = GroupUserThruFactory(group=group, user=user)
+
+        self.assertEqual(gu.status, GroupUserThru._meta.get_field('status').get_default())
+
+        gu.accept_invitation(user, group.uuid)
+        gu.refresh_from_db()
+
+        self.assertEqual(gu.status, StatusChoices.ACTIVE)
+
+    def test_check_new_people_needing_permission(self):
+        group: Group = GroupFactory()
+
+        self.assertEqual(GroupUserThru.check_new_people_needing_permission(group.uuid), 0)
+
+        for _ in range(3):
+            GroupUserThruFactory(group=group, user=UserFactory(), status=StatusChoices.WAITING_FOR_OK)
+
+        self.assertEqual(GroupUserThru.check_new_people_needing_permission(group.uuid), 3)
+
+    def test_cancel_join_request(self):
+        group: Group = GroupFactory()
+        user: User = UserFactory()
+        GroupUserThruFactory(user=user, group=group)
+
+        GroupUserThru.cancel_join_request(group_uuid=group.uuid, user=user)
+        self.assertFalse(GroupUserThru.objects.filter(group=group, user=user).exists())
+
+    def test_decline_invitation(self):
+        group: Group = GroupFactory()
+        user: User = UserFactory()
+        GroupUserThruFactory(user=user, group=group)
+
+        GroupUserThru.decline_invitation(group_uuid=group.uuid, user=user)
+        self.assertFalse(GroupUserThru.objects.filter(group=group, user=user).exists())
+
+    def test_group_via_status(self):
+        user = UserFactory()
+        group = GroupFactory()
+
+        found = GroupUserThru.retrieve_groups_given_status(user=user, status=StatusChoices.ACTIVE)
+        self.assertEqual(found.count(), 0)
+
+        gu: GroupUserThru = GroupUserThruFactory(user=user, group=group, status=StatusChoices.ACTIVE)
+
+        self.assertEqual(found.count(), 1)
+
+        gu.status = StatusChoices.INVITED
+        gu.save()
+        self.assertEqual(found.count(), 0)
+
+
+class TestIntegration(TestCase):
+
+    def test_user_invited(self):
+        group: Group = GroupFactory()
+
+        invited_email = 'invited@example.com'
+
+        group.invite(invited_email)
+
+        # check sends invite email
+        self.assertEqual(len(mail.outbox), 1)
+        print(mail.outbox[0].message())
+
+        # check creates the user
+        users = User.objects.filter(email=invited_email)
+        self.assertTrue(users.exists())
+
+        # check GroupUserThru is INVITED status
+        gu: GroupUserThru = GroupUserThru.objects.get(user__email=invited_email)
+        self.assertEqual(gu.status, StatusChoices.INVITED)
+
+        # accept membership
+        gu.accept_invitation(users[0], group.uuid)
+        gu.refresh_from_db()
+        self.assertEqual(gu.status, StatusChoices.ACTIVE)

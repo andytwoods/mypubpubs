@@ -48,8 +48,7 @@ class GroupUserThru(AbstractGroupUserThru):
 
     @classmethod
     def decline_invitation(cls, user, group_uuid):
-        found = GroupUserThru.objects.get(user=user, group__uuid=group_uuid)
-        found.delete()
+        cls.objects.get(group__uuid=group_uuid, user=user).delete()
 
     @classmethod
     def retrieve_groups_given_status(cls, user: User, status: StatusChoices):

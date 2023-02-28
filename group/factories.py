@@ -9,7 +9,7 @@ class GroupFactory(DjangoModelFactory):
     class Meta:
         model = Group
 
-    title = factory.Faker("text")
+    title = factory.Faker('sentence', nb_words=4)
     description = factory.Faker("text")
 
 

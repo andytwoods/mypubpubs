@@ -160,7 +160,6 @@ def htmx_home_commands(request):
             logout(request)
             user.delete()
             return HttpResponseClientRefresh()
-            #
         case _:
             raise Exception('unknown htmx command')
     return HttpResponseClientRefresh()
