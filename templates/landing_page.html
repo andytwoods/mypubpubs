@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block css %}
+<style>
+/* Set a background image by replacing the URL below */
+body {
+  background: url('{% static 'images/frontpage.jpeg' %}') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+.bg-light{
+    background-color: rgba(255, 255, 255, 0.5) !important;
+}
+.btn-outline-dark {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+</style>
+{% endblock css %}
+
+{% block content %}
+
+
+
+
+{% endblock content %}

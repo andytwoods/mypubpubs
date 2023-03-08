@@ -64,15 +64,17 @@ home_context_info = [('group_memberships', StatusChoices.ACTIVE),
 
 
 def home(request):
-    context = {}
-    if request.user.is_authenticated:
 
-        context['admin_of_groups'] = GroupAdminThru.admin_of_which_groups(request.user)
+    if request.user.is_authenticated:
+        context = {'admin_of_groups': GroupAdminThru.admin_of_which_groups(request.user)}
 
         for label, status in home_context_info:
             context[label] = GroupUserThru.retrieve_groups_given_status(request.user, status)
+        return render(request, 'home.html', context=context)
 
-    return render(request, 'home.html', context=context)
+    return render(request, 'landing_page.html')
+
+
 
 
 class GroupPrefs(UpdateView):
