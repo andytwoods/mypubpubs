@@ -4,45 +4,12 @@
 {% block title %} Welcome {% endblock %}
 
 {% block css %}
-    <style>
-        /* Set a background image by replacing the URL below */
-        body {
-            background: url('{% static 'images/frontpage.jpeg' %}') no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            background-size: cover;
-            -o-background-size: cover;
-        }
+<style>
 
-        .bg-light {
-            background-color: rgba(255, 255, 255, 0.5) !important;
-        }
-
-        .btn-outline-dark {
-            background-color: rgba(255, 255, 255, 0.3) !important;
-        }
-    </style>
+</style>
 {% endblock css %}
 
 {% block content %}
 
-    <div id="tsparticles" style="width:100%; height:100%"></div>
 
-    <script src="{% static 'js/tsparticles.bundle.min.js' %}"></script>
-    <script>
-
-
-    var particles;
-        tsParticles
-            .loadJSON("tsparticles", "{% static 'js/particles.json' %}")
-            .then(container => {
-                console.log("callback - tsparticles config loaded");
-            })
-            .catch(error => {
-                console.error(error);
-            });
-
-
-
-    </script>
 {% endblock content %}
