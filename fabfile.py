@@ -15,7 +15,7 @@ def pass_checks():
         user_input = input("Debug = True. Continue? Y/N:")
         if user_input.lower() != "y":
             return False
-    if settings.ENV_FILE_PATH[-4:] != ".env":
+    if settings.ENV_FILE_PATH[-4:] != ".env_pubpub":
         print("Wrong .env! You have: " + settings.ENV_FILE_PATH)
         return False
     print("checks passed")

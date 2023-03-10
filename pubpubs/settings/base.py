@@ -11,6 +11,7 @@ PARENT_DIR = BASE_DIR.parent
 
 environ.Env.read_env(os.path.join(PARENT_DIR, '.env_pubpub'))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
