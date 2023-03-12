@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %} Login {% endblock %}
 
 {% block css %}
@@ -10,21 +10,10 @@ input {
 </style>
 {% endblock css %}
 
+
 {% block content %}
+    <h2>Enter your email address and we will send you a login link</h2>
 
-    <h1>Login</h1>
-    <div>Enter your email address and we will send you a one use short-lived login link.</div>
-    <div class="row mt-4">
-        <div class="col-12">
-            <form method="post">
-                {% csrf_token %}
-                {{ form }}
-                <div class="mt-4">
-                    <input type="hidden" name="next" id="id_next" value="{% url 'home' %}">
-                    <button class='btn btn-primary' type="submit">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% crispy form %}
 
-{% endblock content %}
+{% endblock %}

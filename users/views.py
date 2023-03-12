@@ -2,11 +2,32 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
+from mailauth.views import LoginView
 
-from .forms import SignUpForm
+from .forms import SignUpForm, MyEmailLoginForm
 from .helpers.login_email import send_login_email
 
 User = get_user_model()
+
+
+class MyLoginView(LoginView):
+    form_class = MyEmailLoginForm
+
+    def form_valid(self, form):
+
+        email = form.cleaned_data[form.field_name]
+        users = list(form.get_users(email))
+        if users:
+            for user in users:
+                context = form.get_mail_context(self.request, user)
+                form.send_mail(email, context)
+            return super().form_valid(form)
+        else:
+            messages.error(self.request, f'{email} is not yet a member of this site')
+            return redirect(reverse('login'))
+
+
+        return outcome
 
 
 def signup_view(request):
