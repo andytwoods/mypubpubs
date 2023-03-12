@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'crispy_forms',
     "crispy_bootstrap5",
+    "captcha",
     # "anymail",
 
     'users',
@@ -188,3 +189,6 @@ PERMISSIONS_POLICY = {
     "payment": [],
     "usb": [],
 }
+
+CAPTCHA_IMAGE_SIZE = (200, 100)
+CAPTCHA_FONT_SIZE = 60

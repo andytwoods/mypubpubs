@@ -11,4 +11,5 @@ urlpatterns = [
     path('', include('users.urls')),
     path('hijack/', include('hijack.urls')),
     path('accounts/profile/', lambda request: redirect('home', permanent=True)),
+    path('captcha/', include('captcha.urls')),
 ]

@@ -7,19 +7,12 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.views.generic import UpdateView
 from django_htmx.http import HttpResponseClientRefresh
-from mailauth.forms import EmailLoginForm
 
 from group.forms import GroupAdminForm, JoinGroupForm, PreferencesForm
 from group.helpers.email import tell_admin_signup
 from group.model_choices import StatusChoices
 from group.models import Group, GroupUserThru, GroupAdminThru
-
-
-def send_login_email(user, request):
-    login_form = EmailLoginForm(None)
-    login_form.cleaned_data = {"next": reverse('home')}
-    context = login_form.get_mail_context(request, user)
-    login_form.send_mail(user.email, context)
+from users.helpers.login_email import send_login_email
 
 
 def group(request, uuid):
@@ -64,7 +57,6 @@ home_context_info = [('group_memberships', StatusChoices.ACTIVE),
 
 
 def home(request):
-
     if request.user.is_authenticated:
         context = {'admin_of_groups': GroupAdminThru.admin_of_which_groups(request.user)}
 
@@ -73,8 +65,6 @@ def home(request):
         return render(request, 'home.html', context=context)
 
     return render(request, 'landing_page.html')
-
-
 
 
 class GroupPrefs(UpdateView):
