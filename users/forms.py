@@ -25,10 +25,10 @@ class SignUpForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Row(
-                Column("email", css_class="col-md-3"),
+                Column("email", css_class="col-md-5"),
             ),
             Row(
-                Column("captcha", css_class="col-md-3"),
+                Column("captcha", css_class="col-md-5"),
             ),
             Row(
                 Column(

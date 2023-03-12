@@ -30,4 +30,4 @@ def signup_view(request):
         form = SignUpForm()
 
     context = {'form': form}
-    return render(request, 'registration/login.html', context)
+    return render(request, 'registration/signup.html', context)
