@@ -16,11 +16,14 @@ from users.helpers.login_email import send_login_email
 
 
 def group(request, uuid):
-    if request.user.is_authenticated:
-        return redirect(reverse('home'))
     my_group: Group = Group.objects.get(uuid=uuid)
+
+    if request.user.is_authenticated:
+        if my_group.linked_with_group(request.user):
+            return redirect(reverse('home'))
+
     if request.POST:
-        form = JoinGroupForm(request.POST)
+        form = JoinGroupForm(request.POST, user=request.user)
         if form.is_valid():
 
             email = form.data.get('email')
@@ -47,7 +50,8 @@ def group(request, uuid):
                     messages.success(request, 'We have sent your details to the admins :)')
             return request.path
     context = {'group': my_group,
-               'form': JoinGroupForm()}
+               'form': JoinGroupForm(user=request.user)}
+
     return render(request, 'group/group.html', context=context)
 
 

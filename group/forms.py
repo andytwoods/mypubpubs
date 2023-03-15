@@ -1,8 +1,10 @@
+from captcha.fields import CaptchaField
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Submit, HTML
 from django import forms
 from django.contrib.auth import get_user_model
+from django.forms import HiddenInput
 
 from group.model_choices import StatusChoices
 from group.models import Group
@@ -11,6 +13,7 @@ User = get_user_model()
 
 
 class PreferencesForm(forms.ModelForm):
+
     class Meta:
         model = User
         fields = ["email", ]
@@ -35,18 +38,28 @@ class PreferencesForm(forms.ModelForm):
 
 class JoinGroupForm(forms.Form):
     email = forms.EmailField()
-
+    captcha = CaptchaField()
     def __init__(self, *args, **kwargs):
+        self.user:User = kwargs.pop('user')
         super().__init__(*args, **kwargs)
+
+        if self.user.is_authenticated:
+            email_field = self.fields['email']
+            email_field.widget.attrs['readonly'] = True
+            email_field.widget = HiddenInput()
+            email_field.initial = self.user.email
+
+        self.fields['captcha'].help_text = 'We need to check you are not a robot. ' \
+                                           'Please type the letters you see in the image ' \
+                                           'into the box above.'
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(
-                Column("email", css_class="col-md-4"),
-            ),
+            Row( Column("email", css_class="col-md-4"),),
+            Row(Column("captcha", css_class="col-md-5"), ),
             Row(
                 Column(
-                    Submit("submit", "Update", css_class="my-4 btn-lg"),
+                    Submit("submit", "Join", css_class="my-4 btn-lg"),
                 ),
                 css_class="justify-content-center",
             ),

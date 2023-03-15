@@ -16,9 +16,11 @@ class Command(BaseCommand):
         group = Group.objects.first()
         if not group:
             try:
-                andy = User.objects.get(email='andytwoods@gmail.com')
+                andy:User = User.objects.get(email='andytwoods@gmail.com')
             except User.DoesNotExist:
                 andy = UserFactory(email='andytwoods@gmail.com')
+                andy.is_superuser = True
+                andy.is_staff = True
                 andy.save()
 
             group = Group()

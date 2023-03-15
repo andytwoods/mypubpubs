@@ -1,11 +1,10 @@
+import uuid
 from urllib import parse
 
-from django.contrib import messages
-from django.db import models
-from django_extensions.db.models import TimeStampedModel
-from django.utils.translation import gettext_lazy as _
-import uuid
 from django.contrib.auth import get_user_model
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django_extensions.db.models import TimeStampedModel
 
 from group.exceptions import InvitedBannedUser
 from group.model_choices import StatusChoices
@@ -116,8 +115,8 @@ class Group(TimeStampedModel):
     def make_admin_email(self, subject='trip to pub', message=''):
         admin_list = self.admins_emails()
         return "mailto:?subject=" + encode(subject) + \
-               "&body=" + encode(message) + \
-               "&to=" + ','.join(admin_list)
+            "&body=" + encode(message) + \
+            "&to=" + ','.join(admin_list)
 
     def make_email(self, subject='trip to pub', message=None):
 
@@ -205,6 +204,11 @@ class Group(TimeStampedModel):
     def check_is_admin(self, user: User):
         exists = user in self.admins.all()
         return exists
+
+    def linked_with_group(self, user: User):
+        return GroupUserThru.objects.filter(group=self, user=user).exists() or \
+            GroupAdminThru.objects.filter(group=self, user=user).exists()
+
 
 def encode(str):
     return parse.quote(str, safe='~()*!\'')
