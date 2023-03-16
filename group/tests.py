@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from group.factories import GroupUserThruFactory, GroupFactory, GroupAdminThruFactory
+from group.helpers.email import tell_admin_signup
 from group.model_choices import StatusChoices
 from group.models import GroupUserThru, GroupAdminThru, Group
 from group.views import home_context_info
@@ -154,3 +155,18 @@ class TestIntegration(TestCase):
         gu.accept_invitation(users[0], group.uuid)
         gu.refresh_from_db()
         self.assertEqual(gu.status, StatusChoices.ACTIVE)
+
+class TestEmails(TestCase):
+    def test_tell_admin_signup(self):
+        group: Group = GroupFactory()
+        admin = UserFactory()
+        GroupAdminThru(group=group, user=admin).save()
+
+        email = 'test@test.com'
+        self.assertEqual(len(mail.outbox), 0)
+
+        self.signup = tell_admin_signup(email=email, group=group)
+        self.assertEqual(len(mail.outbox), 1)
+
+
+

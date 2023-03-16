@@ -26,7 +26,7 @@ def group(request, uuid):
         form = JoinGroupForm(request.POST, user=request.user)
         if form.is_valid():
 
-            email = form.data.get('email')
+            email = request.user.email if request.user.is_authenticated else form.data.get('email')
             domain_info = email.split('@')
             safe_domains = [domain[0] for domain in my_group.safe_domains.all().values_list('domain')]
 
@@ -47,8 +47,8 @@ def group(request, uuid):
                     on_active_member(groupuser, "You already are a part of this group!")
                 else:
                     tell_admin_signup(email, my_group)
-                    messages.success(request, 'We have sent your details to the admins :)')
-            return request.path
+                    messages.success(request, 'As soon as the admins accept your request, you will be a member of this group :)')
+            return redirect('home')
     context = {'group': my_group,
                'form': JoinGroupForm(user=request.user)}
 

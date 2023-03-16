@@ -7,7 +7,6 @@ from django.conf import settings
 
 def tell_admin_signup(email: str, group):
     admins_emails = group.admins_emails()
-ISSUE HERE WHEN TRYING TO JOIN
     link = reverse('accept_person', kwargs={'email': email, 'uuid':str(group.uuid)})
     message = f'To accept them, please follow this link: {link}.'
     html_message = f'To accept them, please follow this <a href="{link}">link</a>.'
