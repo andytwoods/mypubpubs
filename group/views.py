@@ -47,7 +47,8 @@ def group(request, uuid):
                     on_active_member(groupuser, "You already are a part of this group!")
                 else:
                     tell_admin_signup(email, my_group)
-                    messages.success(request, 'As soon as the admins accept your request, you will be a member of this group :)')
+                    messages.success(request,
+                                     'As soon as the admins accept your request, you will be a member of this group :)')
             return redirect('home')
     context = {'group': my_group,
                'form': JoinGroupForm(user=request.user)}
@@ -180,3 +181,22 @@ def htmx_modal(request):
             return redirect('mailauth:login')
 
     raise Exception('unknown htmx modal request')
+
+
+def htmx_generate_email(request, uuid: str, usertype: str):
+    _group: Group = Group.objects.get(uuid=uuid)
+    match usertype:
+        case 'user':
+            if not _group.check_is_user(request.user):
+                raise Exception(f'non admin user ({request.user.id}) tried to request admin email (group: {uuid})')
+            a_record_url = _group.make_admin_email()
+            pass
+        case 'admin':
+            if not _group.check_is_admin(request.user):
+                raise Exception(f'non admin user ({request.user.id}) tried to request admin email (group: {uuid})')
+            a_record_url = _group.make_email()
+        case _:
+            raise Exception(f'unknown htmx htmx_generate_email command: {usertype}')
+
+    context = {'a_record_url': a_record_url, 'my_id': f'{_group.uuid}-{usertype}' }
+    return render(request, 'group/generate_email.html', context=context)

@@ -171,24 +171,5 @@ LOGOUT_REDIRECT_URL = "/"
 
 WEBSITE = 'https://www.pubpubs.pub'
 
-PERMISSIONS_POLICY = {
-    "accelerometer": [],
-    "ambient-light-sensor": [],
-    "autoplay": [],
-    "camera": [],
-    "display-capture": [],
-    "document-domain": [],
-    "encrypted-media": [],
-    "fullscreen": [],
-    "geolocation": [],
-    "gyroscope": [],
-    "interest-cohort": [],
-    "magnetometer": [],
-    "microphone": [],
-    "midi": [],
-    "payment": [],
-    "usb": [],
-}
-
 CAPTCHA_IMAGE_SIZE = (200, 100)
 CAPTCHA_FONT_SIZE = 60

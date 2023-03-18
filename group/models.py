@@ -202,7 +202,11 @@ class Group(TimeStampedModel):
         return group_user, joined_group
 
     def check_is_admin(self, user: User):
-        exists = user in self.admins.all()
+        exists = GroupAdminThru.objects.filter(user=user, group=self).exists
+        return exists
+
+    def check_is_user(self, user: User):
+        exists = GroupUserThru.objects.filter(user=user, group=self, status=StatusChoices.ACTIVE).exists
         return exists
 
     def linked_with_group(self, user: User):

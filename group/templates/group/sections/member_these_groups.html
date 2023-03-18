@@ -11,7 +11,7 @@
                         <p class="card-text">{{ member.group.description }}</p>
 
                         {% if member.group.members_can_email_all %}
-                            {% include 'group/generate_email.html' with email_info=member.group.make_email %}
+                            {% include 'group/generate_email_htmx.html' with usertype='member' uuid=member.group.uuid %}
                         {% endif %}
 
                         <button type="button" class="btn dropdown-toggle float-end"

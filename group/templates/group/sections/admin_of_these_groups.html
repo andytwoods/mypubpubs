@@ -14,7 +14,7 @@
                         <p class="card-text">{{ groupadmin.group.description }}</p>
 
 
-                        {% include 'group/generate_email.html' with email_info=groupadmin.group.make_email %}
+                        {% include 'group/generate_email_htmx.html' with usertype='admin' uuid=groupadmin.group.uuid %}
 
 
                         <a href="{% url 'admin-group-edit' groupadmin.group.uuid %}" class="btn float-end">
