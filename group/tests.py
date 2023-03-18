@@ -39,6 +39,30 @@ class TestHome(TestCase):
 
         self.assertEqual(found.count(), 1)
 
+    def test_check_is_admin(self):
+        user = UserFactory()
+        group:Group = GroupFactory()
+        self.assertFalse(group.check_is_admin(user))
+
+        GroupAdminThru(user=user, group=group).save()
+
+        self.assertTrue(group.check_is_admin(user))
+
+    def test_check_is_active_user(self):
+        user = UserFactory()
+        group: Group = GroupFactory()
+        self.assertFalse(group.check_is_active_user(user))
+
+        gu:GroupUserThru = GroupUserThru(user=user, group=group)
+
+        self.assertFalse(group.check_is_active_user(user))
+
+        gu.status = StatusChoices.ACTIVE
+        gu.save()
+        self.assertTrue(group.check_is_active_user(user))
+
+
+
     def test_admin_edit_group(self):
         response = self.client.get(reverse('admin-group-edit', kwargs={'uuid': '79adfebf-4305-4cea-a016-f0b58a2228b7'}))
         self.assertRedirects(response, reverse('home'))

@@ -187,7 +187,7 @@ def htmx_generate_email(request, uuid: str, usertype: str):
     _group: Group = Group.objects.get(uuid=uuid)
     match usertype:
         case 'user':
-            if not _group.check_is_user(request.user):
+            if not _group.check_is_active_user(request.user):
                 raise Exception(f'non admin user ({request.user.id}) tried to request admin email (group: {uuid})')
             a_record_url = _group.make_admin_email()
             pass
