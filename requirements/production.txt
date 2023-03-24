@@ -1,4 +1,4 @@
 -r ./base.txt
 
 gunicorn==20.1.0  # https://github.com/benoitc/gunicorn
-psycopg2==2.8.6 --no-binary psycopg2  # https://github.com/psycopg/psycopg2
+psycopg2==2.8.6
