@@ -7,7 +7,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['167.235.66.120', 'pubpub.social', ]
 
 MIDDLEWARE.append("rollbar.contrib.django.middleware.RollbarNotifierMiddleware")
 
