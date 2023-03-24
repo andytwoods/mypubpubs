@@ -89,14 +89,27 @@ WSGI_APPLICATION = 'pubpubs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if env.get_value('PRODUCTION') == 'True':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.contrib.gis.db.backends.postgresql_psycopg2",
+            "NAME": os.environ["DB_NAME"],
+            "USER": os.environ["DB_USERNAME"],
+            "PASSWORD": os.environ["DB_PASSWORD"],
+            "HOST": os.environ["DB_HOSTNAME"],
+            "PORT": 5432,
+            "ATOMIC_REQUESTS": True,
+            "CONN_MAX_AGE": 60,
+        }
     }
-}
-
-# Password validation
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+    # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
