@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'pubpubs.wsgi.application'
 if env.get_value('PRODUCTION') == 'True':
     DATABASES = {
         "default": {
-            "ENGINE": "django.contrib.gis.db.backends.postgresql_psycopg2",
+            "ENGINE": "django.contrib.gis.db.backends.postgresql",
             "NAME": os.environ["DB_NAME"],
             "USER": os.environ["DB_USERNAME"],
             "PASSWORD": os.environ["DB_PASSWORD"],
