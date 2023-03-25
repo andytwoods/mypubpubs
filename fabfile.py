@@ -27,13 +27,13 @@ def prod(context):
                 conn.run("cd pubpubs")
                 conn.run("cd mypubpubs")
                 conn.run("git pull")
-                conn.run("pip install -r requirements.txt")
+                conn.run("pip install -r requirements/production.txt")
                 conn.run("python manage.py migrate")
                 # deploying vue components
                 conn.run("python manage.py collectstatic --noinput")
-                conn.run("sudo supervisorctl restart sfpanel_production")
+                conn.run("sudo systemctl restart gunicorn")
                 conn.run("sudo service nginx restart")
-                conn.run("sudo supervisorctl restart huey")
+                # conn.run("sudo supervisorctl restart huey")
 
         # it is done manually
         # with conn.cd('/home/ubuntu/production/git/my_staticfiles/vue/'):
