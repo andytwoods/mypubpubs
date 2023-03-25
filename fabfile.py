@@ -24,14 +24,13 @@ def prod(context):
         conn.config.run.env = {"DJANGO_SETTINGS_MODULE": "pubpubs.settings.production"}
         with conn.cd("/root/django-apps/mypubpubs/"):
             with conn.prefix("source pubpubs/venv/bin/activate"):
-                production_info = ' --settings=pubpubs.settings.production'
                 conn.run("cd pubpubs")
                 conn.run("cd mypubpubs")
                 conn.run("git pull")
                 conn.run("pip install -r requirements/production.txt")
-                conn.run("python manage.py migrate" + production_info)
+                conn.run("python manage.py migrate --settings=pubpubs.settings.production")
                 # deploying vue components
-                conn.run("python manage.py collectstatic --noinput" + production_info)
+                conn.run("python manage.py collectstatic --noinput --settings=pubpubs.settings.production")
                 conn.run("sudo systemctl restart gunicorn")
                 conn.run("sudo service nginx restart")
                 # conn.run("sudo supervisorctl restart huey")
