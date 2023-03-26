@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 from django.views.generic import UpdateView
 from django_htmx.http import HttpResponseClientRefresh
@@ -61,7 +62,7 @@ home_context_info = [('group_memberships', StatusChoices.ACTIVE),
                      ('waiting_memberships', StatusChoices.WAITING_FOR_OK),
                      ('ok_invitation', StatusChoices.INVITED)]
 
-
+@cache_page(60 * 1) # 1 minute cache
 def home(request):
     if request.user.is_authenticated:
         context = {'admin_of_groups': GroupAdminThru.admin_of_which_groups(request.user)}
