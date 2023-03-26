@@ -36,7 +36,7 @@ def signup_view(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            user, created = User.objects.get(email=email)
+            user, created = User.objects.get_or_create(email=email)
             if created:
                 user.save()
                 messages.success(request, f'Welcome! We have sent you an email to {email} with a link '

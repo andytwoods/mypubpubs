@@ -10,6 +10,7 @@ from django_htmx.http import HttpResponseClientRefresh
 
 from group.forms import GroupAdminForm, JoinGroupForm, PreferencesForm
 from group.helpers.email import tell_admin_signup
+from group.helpers.email_link import compose_email_link
 from group.model_choices import StatusChoices
 from group.models import Group, GroupUserThru, GroupAdminThru
 from users.helpers.login_email import send_login_email
@@ -69,7 +70,22 @@ def home(request):
             context[label] = GroupUserThru.retrieve_groups_given_status(request.user, status)
         return render(request, 'home.html', context=context)
 
-    return render(request, 'landing_page.html')
+    message = '''This is an example email! Just add whatever text you want here, and then click send.
+    
+    'WHY DO WE NEED AN APP FOR THIS??!' I hear you ask. There's a stack of good reasons.  For example, letting people signup/leave your group via an app means you will never forget someone. You can make it that ANYONE in the group can generate an email. You can have emails automatically CC/BCC people, helping avoid embarrassing mistakes. 
+    
+    This app ONLY saves email addresses in its database. We don't collect any other information. We don't do cookies. It's birthplace was in Academia, with the goal of emailing and managing an ever growing list of researchers who enjoyed a pint after work.
+    
+    At the bottom of the email we provide information (if desired) about others signing up to the email,
+     leaving the group etc.'''
+
+    context = {'email_link': compose_email_link('greetings!',
+                                                message=message,
+                                                field_txt='cc',
+                                                email_list=['example@example.com',
+                                                            'example2@example.com',
+                                                            'example3@example.com'])}
+    return render(request, 'landing_page.html', context=context)
 
 
 class GroupPrefs(UpdateView):

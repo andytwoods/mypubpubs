@@ -1,5 +1,4 @@
 import uuid
-from urllib import parse
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -7,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 
 from group.exceptions import InvitedBannedUser
+from group.helpers.email_link import generate_message, compose_email_link, encode
 from group.model_choices import StatusChoices
 
 User = get_user_model()
@@ -65,16 +65,6 @@ class GroupAdminThru(AbstractGroupUserThru):
             filter(user=user). \
             select_related('group'). \
             prefetch_related('user')
-
-
-def generate_message(group):
-    message = f"""
-    
-    ******POWERED BY www.PubPubs.Pub******
-    ***Visit www.pubpubs.pub/group/{group.uuid}/ to join this group if you were forwarded this message***
-    ***You can delete your link to this group there too, or set up a SNOOZE period***
-    """
-    return message  # '%0D'.join(message.splitlines())
 
 
 class DomainNames(models.Model):
@@ -139,9 +129,7 @@ class Group(TimeStampedModel):
             email_list = admin_list + email_list
             admin_list.clear()
 
-        mailto_txt = "mailto:?subject=" + encode(subject) + \
-                     "&body=" + encode(message) + \
-                     f"&{field_txt}={','.join(email_list)}"
+        mailto_txt = compose_email_link(subject, message, field_txt, email_list)
 
         if self.field is not Group.FieldChoices.TO:
             mailto_txt += f"&to={','.join(admin_list)}"
@@ -213,6 +201,3 @@ class Group(TimeStampedModel):
         return GroupUserThru.objects.filter(group=self, user=user).exists() or \
             GroupAdminThru.objects.filter(group=self, user=user).exists()
 
-
-def encode(str):
-    return parse.quote(str, safe='~()*!\'')

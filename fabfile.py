@@ -22,10 +22,8 @@ def prod(context):
             host=ip_address, user="root", port=1337, connect_kwargs={'password': pword}
     ) as conn:
         conn.config.run.env = {"DJANGO_SETTINGS_MODULE": "pubpubs.settings.production"}
-        with conn.cd("/root/django-apps/mypubpubs/"):
-            with conn.prefix("source pubpubs/venv/bin/activate"):
-                conn.run("cd pubpubs")
-                conn.run("cd mypubpubs")
+        with conn.cd("/root/pubpubs/mypubpubs"):
+            with conn.prefix("source /root/pubpubs/venv/bin/activate"):
                 conn.run("git pull")
                 conn.run("pip install -r requirements/production.txt")
                 conn.run("python manage.py migrate --settings=pubpubs.settings.production")
