@@ -27,16 +27,17 @@
             <ul>
                 <li>Create self-managing email groups</li>
                 <li>Never forget someone again</li>
-                <li>Free (as beer) for the foreseeable future. No Cookies. No Evil.</li>
+                <li>Free (as in beer) for the foreseeable future. No Cookies. No Evil</li>
                 <li>Click a button, a draft email pops up in your email software
                     <a class='btn btn-sm btn-outline-primary my-0' target='_blank' href='{{ email_link }}'>try it!</a>
                 </li>
             </ul>
 
-            <a class="btn btn-primary" href="{% url 'login' %}">Log In</a>
-
-            <a class="btn btn-primary" href="{% url 'signup' %}">Sign
-                Up</a>
+            <div class="mt-4">
+                <a class="btn btn-primary" href="{% url 'login' %}">Log In</a>
+                <a class="btn btn-primary" href="{% url 'signup' %}">Sign
+                    Up</a>
+            </div>
 
         </div>
     </section>

@@ -159,19 +159,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
 
-# ANYMAIL = {
-#     # (exact settings here depend on your ESP...)
-#     "MAILGUN_API_KEY": "<your Mailgun key>",
-#     "MAILGUN_SENDER_DOMAIN": 'mg.example.com',  # your Mailgun domain, if needed
-# }
-# EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"  # or sendgrid.EmailBackend, or...
-# DEFAULT_FROM_EMAIL = "pub@pubpubs.pub"  # if you don't already have this in settings
-# SERVER_EMAIL = DEFAULT_FROM_EMAIL  # ditto (default from-email for Django errors)
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-DEFAULT_FROM_EMAIL = "pub <pub@pubpubs.pub>"
+
+
+DEFAULT_FROM_EMAIL = "pub <pub@pubpub.social>"
 
 EMAIL_SITE = DEFAULT_FROM_EMAIL
 
@@ -184,7 +176,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-WEBSITE = 'https://www.pubpubs.pub'
+WEBSITE = 'https://www.pubpub.social'
 
 CAPTCHA_IMAGE_SIZE = (200, 100)
 CAPTCHA_FONT_SIZE = 60
