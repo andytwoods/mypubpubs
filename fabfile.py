@@ -13,7 +13,6 @@ def prod(context):
     ip_address = '167.235.66.120'
     """
     To deploy to production type: fab prod
-    The connection has been hardcoded to ease the command
     """
 
     pword = getpass.getpass('Password: ')
@@ -23,7 +22,7 @@ def prod(context):
     ) as conn:
         conn.config.run.env = {"DJANGO_SETTINGS_MODULE": "pubpubs.settings.production"}
         with conn.cd("/root/pubpubs/mypubpubs"):
-            with conn.prefix("source /root/pubpubs/venv/bin/activate"):
+            with conn.prefix("source /root/venv/bin/activate"):
                 conn.run("git pull")
                 conn.run("pip install -r requirements/production.txt")
                 conn.run("python manage.py migrate --settings=pubpubs.settings.production")
@@ -31,6 +30,7 @@ def prod(context):
                 conn.run("python manage.py collectstatic --noinput --settings=pubpubs.settings.production")
                 conn.run("sudo systemctl restart gunicorn")
                 conn.run("sudo service nginx restart")
+                conn.run("echo 'restarted gunicorn and nginx'")
                 # conn.run("sudo supervisorctl restart huey")
 
         # it is done manually

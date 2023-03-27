@@ -12,7 +12,7 @@ urlpatterns = [
     path('htmx_home_commands/', views.htmx_home_commands, name='htmx_group_commands'),
     path('htmx_modal/', views.htmx_modal, name='htmx_modal'),
     path('htmx_generate_email/<uuid:uuid>/<str:usertype>/', views.htmx_generate_email, name='htmx_generate_email'),
-    path('test-rollbar/', views.test_rollbar)
+    # path('test-rollbar/', views.test_rollbar)
 
 ]
 
