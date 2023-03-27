@@ -45,8 +45,10 @@ LOGGING = {
         "rollbar": {
             "level": "ERROR",
             "filters": ["require_debug_false"],
-            "access_token": "a81e310641474325931db1b348aba935",
+            'access_token': '9e18a3b6fccf4cc7875bcb82975fda1e',
             "environment": "production",
+            'root': BASE_DIR,
+            'code_version': '1.0',
             "class": "rollbar.logger.RollbarHandler",
         },
     },
