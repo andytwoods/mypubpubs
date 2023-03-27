@@ -86,6 +86,7 @@ def home(request):
                                                 email_list=['example@example.com',
                                                             'example2@example.com',
                                                             'example3@example.com'])}
+    error()
     return render(request, 'landing_page.html', context=context)
 
 
