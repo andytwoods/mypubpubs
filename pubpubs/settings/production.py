@@ -37,7 +37,7 @@ LOGGING = {
             "formatter": "verbose",
         },
         "local_logs": {
-            "level": "ERROR",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
             "formatter": "timestamp",
                 "filename": os.path.join(PARENT_DIR, "django.log"),
