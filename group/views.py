@@ -218,3 +218,7 @@ def htmx_generate_email(request, uuid: str, usertype: str):
 
     context = {'a_record_url': a_record_url, 'my_id': f'{_group.uuid}-{usertype}' }
     return render(request, 'group/generate_email.html', context=context)
+
+
+def test_rollbar(request):
+    raise Exception('testing rollbar')

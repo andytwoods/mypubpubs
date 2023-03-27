@@ -1,5 +1,5 @@
+import getpass
 import os
-import platform
 
 from fabric import Connection
 from fabric import task
@@ -16,7 +16,7 @@ def prod(context):
     The connection has been hardcoded to ease the command
     """
 
-    pword = input('password:  ')
+    pword = getpass.getpass('Password: ')
 
     with Connection(
             host=ip_address, user="root", port=1337, connect_kwargs={'password': pword}
