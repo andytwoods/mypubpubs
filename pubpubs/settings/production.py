@@ -35,6 +35,7 @@ LOGGING = {
         "local_logs": {
             "level": "ERROR",
             "class": "logging.FileHandler",
+            "formatter": "timestamp",
                 "filename": os.path.join(PARENT_DIR, "django.log"),
         },
         "rollbar": {
