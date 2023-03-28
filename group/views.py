@@ -62,7 +62,8 @@ home_context_info = [('group_memberships', StatusChoices.ACTIVE),
                      ('waiting_memberships', StatusChoices.WAITING_FOR_OK),
                      ('ok_invitation', StatusChoices.INVITED)]
 
-@cache_page(20 * 1) # 20s cache
+
+#@cache_page(20 * 1) # 20s cache
 def home(request):
     if request.user.is_authenticated:
         context = {'admin_of_groups': GroupAdminThru.admin_of_which_groups(request.user)}

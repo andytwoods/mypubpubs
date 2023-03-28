@@ -5,13 +5,11 @@
   },
   "particles": {
     "number": {
-      "value": 80,
-      "density": {
-        "enable": true
-      }
+      "value": 80
+
     },
     "color": {
-      "value": "0x333333"
+      "value": "0x999999"
     },
     "shape": {
       "type": "char",
@@ -26,15 +24,15 @@
       }
     },
     "connect": {
-      "distance": 200,
+      "distance": 2000,
       "links": {
-        "opacity": 0.5
+        "opacity": 1
       },
       "radius": 60
     },
     "stroke": {
-      "width": 1,
-      "color": "#333333"
+      "width": 4,
+      "color": "#999999"
     },
     "opacity": {
       "value": 0.4,
@@ -47,7 +45,7 @@
       }
     },
     "links": {
-      "color": "#DDDDDD",
+      "color": "#555555",
       "enable": true
     },
     "grab": {
@@ -71,7 +69,7 @@
     "move": {
       "enable": true,
       "speed": 1,
-      "max-speed": 3,
+      "max-speed": 4,
       "direction": "none",
       "random": false,
       "straight": false,

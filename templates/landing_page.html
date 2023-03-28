@@ -18,16 +18,15 @@
 
 {% block content %}
 
-    <div id="tsparticles" style="width:100%; height:100%"></div>
+    <div id="tsparticles" style="width:100%; height:100%; z-index: 1;"></div>
 
     <section class="py-5">
-        <div class="container">
+        <div class="container bg-white p-2 rounded">
             <h1>Welcome pubpub.social</h1>
 
             <ul>
                 <li>Create self-managing email groups</li>
-                <li>Never forget someone again</li>
-                <li>Free (as in beer) for the foreseeable future. No Cookies. No Evil</li>
+                <li>Free (as in beer) for the foreseeable future. No Cookies</li>
                 <li>Click a button, a draft email pops up in your email software
                     <a class='btn btn-sm btn-outline-primary my-0' target='_blank' href='{{ email_link }}'>try it!</a>
                 </li>
@@ -38,7 +37,7 @@
                 <a class="btn btn-primary" href="{% url 'signup' %}">Sign
                     Up</a>
             </div>
-
+            <div class="h1 mt-5">This app is in development. For the time being, only admin can create new groups</div>
         </div>
     </section>
 
