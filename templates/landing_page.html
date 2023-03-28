@@ -18,11 +18,9 @@
 
 {% block content %}
 
-    <div id="tsparticles" style="width:100%; height:100%; z-index: 1;"></div>
-
     <section class="py-5">
-        <div class="container bg-white p-2 rounded">
-            <h1>Welcome pubpub.social</h1>
+        <div class="container p-2 rounded">
+            <h1 class="bg-light ">Welcome pubpub.social</h1>
 
             <ul>
                 <li>Create self-managing email groups</li>
@@ -41,7 +39,7 @@
         </div>
     </section>
 
-
+   <div id="tsparticles" style="width:100%; height:100%; z-index: -1;"></div>
     <script src="{% static 'js/tsparticles.bundle.min.js' %}"></script>
     <script>
 
