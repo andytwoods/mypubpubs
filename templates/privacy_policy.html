@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Privacy Policy {% endblock %}
+
+{% block content %}
+
+<div class="" style="max-width: 980px;"><h1>{{ request.get_host }}</h1>
+<h2>Privacy Notice</h2>
+<h3>Introduction</h3>
+<p>This privacy notice relates to the information you provide to {{ request.get_host }} when you sign up to the site. It explains how we collect, use and share your personal data and your rights in relation to the processing of your data.</p>
+<p>In this notice:</p>
+<ul>
+<li>‘<strong>personal data</strong>’ means any data which can identify you directly or indirectly (whether by itself or when combined with other data), regardless of the format or media on which the data are stored. This includes data that can identify you when combined with other data that is held separately (pseudonymous data) but does not include data that has been manipulated so that you can no longer be identified from it (anonymous data).</li>
+<li>‘<strong>processing</strong>’ means any activity relating to your personal data including collection, use, alteration, storage, disclosure and destruction.</li>
+</ul>
+<h3>What personal data will be collected</h3>
+<p>When you sign up to the website, you need have to provide the following information about yourself:</p>
+<ul>
+<li>Email address</li>
+</ul>
+<h3>How and when do we collect your personal data?</h3>
+<p>We will collect your personal data when you provide it to us during the sign up to this website. You can update or remove this data at any time by deleting your account.</p>
+<h3>How long will we retain your personal data?</h3>
+<p>We will only retain your personal data for as long as necessary to fulfil the purposes for which it was collected and to satisfy any legal, regulatory, accounting or reporting requirements.</p>
+<h3>Sharing your personal data with third parties</h3>
+<p>Only in certain circumstances we may need to share your personal information with a regulator or to otherwise comply with the law. We will not share your data with anyone outside of these special circumstances.</p>
+<h3>International Data Transfers</h3>
+<p>Most personal data about you, including your personnel file, will be stored on servers within the UK or elsewhere within the European Economic Area (EEA).<br>On occasion it may be necessary to transfer your personal data outside of the European Economic Area (EEA). This will only take place in circumstances where there are appropriate and adequate safeguards in place which incorporate appropriate assurances to ensure the security of the information and compliance with legislative and regulatory requirements.</p>
+<h3>How do we keep your personal data secure?</h3>
+<p>Appropriate technical and organisational security measures have been put in place to prevent your personal data from being accidentally lost, used or accessed in any unauthorised way or altered or disclosed. Procedures are also in place to deal with any suspected personal data security breach. We will notify you and any applicable regulator of a suspected breach where legally required to do so.</p>
+<h3>You and your data</h3>
+<p>You have a number of rights in relation to the processing of your personal data by {{ request.get_host }}:</p>
+<ul>
+<li><em>Access</em>: You have the <a href="https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/individual-rights/right-of-access/">right to request access</a> to and be provided with a copy of the personal data held about you together with certain information about the processing of such personal data to check that it is being processed lawfully and fairly.</li>
+<li><em>Correction</em>: You have the <a href="https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/individual-rights/right-to-rectification/">right to request correction</a> of any inaccurate or incomplete personal data held about you.</li>
+<li><em>Deletion</em>: You have the <a href="https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/individual-rights/right-to-erasure/">right to request erasure</a> of any personal data held about you where there is no good reason for us to continue processing it or where you have exercised your right to object to the processing of your personal data.</li>
+<li><em>Restriction</em>: You have the <a href="https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/individual-rights/right-to-restrict-processing/">right to request restriction</a> of how your personal data is processed; for example, to confirm its accuracy or our reasons for holding it or as an alternative to its erasure.</li>
+<li><em>Objection</em>: You have the <a href="https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/individual-rights/right-to-object/">right to object</a> to the processing of any personal data which is based on legitimate interests or those of a third party based on your particular circumstances. You also have the right to object to us processing your personal data for direct marketing purposes.</li>
+<li><em>Complaints</em>: You have the right to complain to the<a href="https://ico.org.uk/concerns/"> Information Commissioner’s Office (ICO) </a>in relation to how the we processes your personal data.</li>
+</ul>
+<p>We may be entitled to refuse any request in certain circumstances and where this is the case, you will be notified accordingly.<br>Where the lawful ground relied upon to process any of your personal data is your consent, you have the right to withdraw such consent at any time without having to give any reason. However, if you do so, it may not be possible to provide you with some or all of the services you have requested.<br>You will not have to pay any fee to exercise any of the above rights, though we may charge a reasonable fee or refuse to comply with your request if any request is clearly unfounded or excessive. Where this is the case, you will be notified accordingly.<br>To protect the confidentiality of your personal data we may ask you to verify your identity before fulfilling any request in relation to your personal data.</p>
+<h3>Changes to this notice</h3>
+<p>We may update this notice at any time and may provide you with further notices on specific occasions where we collect and process personal data about you. You should check this notice regularly to take notice of any changes. Where any change affects your rights and interests, we will make sure we bring this to your attention and clearly explain what this means for you.</p>
+<h3>Questions or comments</h3>
+<p>If you have any questions or comments regarding this notice or you wish to exercise any of your rights you should contact us by email at help{{ request.get_host }}.<br>You also have the right to complain to the Information Commissioner’s Office and you can find more information on their website – <a href="http://www.ico.org.uk">www.ico.org.uk</a>.</p></div>
+
+{% endblock content %}
