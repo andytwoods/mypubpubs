@@ -161,7 +161,7 @@ class TestIntegration(TestCase):
 
         invited_email = 'invited@example.com'
 
-        group.invite(invited_email)
+        group.add_people(invited_email)
 
         # check sends invite email
         self.assertEqual(len(mail.outbox), 1)
@@ -171,13 +171,9 @@ class TestIntegration(TestCase):
         users = User.objects.filter(email=invited_email)
         self.assertTrue(users.exists())
 
-        # check GroupUserThru is INVITED status
+        # check GroupUserThru is ACTIVE status
+        # Note, changed this from INVITED status, for simplification
         gu: GroupUserThru = GroupUserThru.objects.get(user__email=invited_email)
-        self.assertEqual(gu.status, StatusChoices.INVITED)
-
-        # accept membership
-        gu.accept_invitation(users[0], group.uuid)
-        gu.refresh_from_db()
         self.assertEqual(gu.status, StatusChoices.ACTIVE)
 
 class TestEmails(TestCase):

@@ -123,7 +123,7 @@ class GroupPrefs(UpdateView):
         group.authorise_users(form.cleaned_data['requested_to_join'])
         group.ban_users(form.cleaned_data['add_banned'])
 
-        group.invite(form.data['invite_people'])
+        group.add_people(form.data['add_people'])
 
         return outcome
 

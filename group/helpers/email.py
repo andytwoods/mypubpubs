@@ -24,7 +24,7 @@ def let_new_user_know_added(group, email, status: StatusChoices):
 
     match status:
         case StatusChoices.ACTIVE:
-            subject = f"A message about the group: '{group.title}'"
+            subject = f"You have been added to this group: '{group.title}'"
             message = f'Yay :) Visit { settings.WEBSITE } to edit your membership, or delete your account.'
         case StatusChoices.INVITED:
             subject = f"You have been invited to join this group: '{group.title}'"

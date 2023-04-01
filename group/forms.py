@@ -77,7 +77,7 @@ class GroupAdminForm(forms.ModelForm):
     members = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, required=False)
     requested_to_join = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, required=False)
 
-    invite_people = forms.CharField(widget=forms.Textarea, max_length=1024, required=False)
+    add_people = forms.CharField(widget=forms.Textarea, max_length=1024, required=False)
     add_banned = forms.CharField(widget=forms.Textarea, max_length=1024, required=False)
 
     def __init__(self, *args, **kwargs):
@@ -97,9 +97,9 @@ class GroupAdminForm(forms.ModelForm):
         asked_users = [(u.id, u.email) for u in my_asked]
         self.fields['requested_to_join'].choices = asked_users
         self.fields['requested_to_join'].help_text = 'Select those who you want to become active members'
-        self.fields['invite_people'].widget.attrs = {'rows': 2, 'placeholder': 'enter comma/tab/line seperated email '
-                                                                               'addresses to invite people to this '
-                                                                               'group'}
+        self.fields['add_people'].widget.attrs = {'rows': 2, 'placeholder': 'enter comma/tab/line seperated email '
+                                                                               'addresses to add people to this '
+                                                                               'group.'}
 
         self.fields['safe_domains'].queryset = group.safe_domains.all()
         self.fields['add_safe_domains'].widget.attrs = {'rows': 2,
@@ -123,7 +123,7 @@ class GroupAdminForm(forms.ModelForm):
                 HTML('<h4>Members</h2>'),
                 Column(InlineCheckboxes("members"), css_class="col-md-12"),
                 Column(InlineCheckboxes("requested_to_join"), css_class="col-md-12"),
-                Column("invite_people", css_class="col-md-12"),
+                Column("add_people", css_class="col-md-12"),
                 css_class=row_css,
             ),
             Row(

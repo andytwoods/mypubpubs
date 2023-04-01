@@ -168,9 +168,9 @@ class Group(TimeStampedModel):
         to_remove.delete()
         return found
 
-    def invite(self, invite_emails_str):
+    def add_people(self, invite_emails_str):
         for email in make_list(invite_emails_str):
-            self.add_user(email, StatusChoices.INVITED)
+            self.add_user(email, StatusChoices.ACTIVE)
 
     def add_user(self, email, status: StatusChoices):
         user, created = User.objects.get_or_create(email=email)
