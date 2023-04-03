@@ -128,7 +128,7 @@ class GroupAdminForm(forms.ModelForm):
                                                                  ' to ban'}
 
         self.helper = FormHelper()
-        row_css = 'bg-light rounded shadow mb-3'
+        row_css = 'bg-light rounded shadow mb-5 p-3'
         self.helper.layout = Layout(
             Row(
                 Column("title", css_class="col-md-12"),
