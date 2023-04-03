@@ -106,7 +106,7 @@ class GroupAdminForm(forms.ModelForm):
         else:
             requested_to_join.choices = asked_users
             requested_to_join.help_text = 'Select those who you want to become active members'
-        self.fields['add_people'].widget.attrs = {'rows': 2, 'placeholder': 'enter comma/tab/line seperated email '
+        self.fields['add_people'].widget.attrs = {'rows': 3, 'placeholder': 'enter comma/tab/line seperated email '
                                                                                'addresses to add people to this '
                                                                                'group'}
         link = compose_email_link(subject='Link to join group',
@@ -118,12 +118,12 @@ class GroupAdminForm(forms.ModelForm):
                                                     f'joining link</a></small>')
 
         self.fields['safe_domains'].queryset = group.safe_domains.all()
-        self.fields['add_safe_domains'].widget.attrs = {'rows': 2,
+        self.fields['add_safe_domains'].widget.attrs = {'rows': 3,
                                                         'placeholder': 'enter comma/tab/line seperated domains '
                                                                        '(e.g. rhul.ac.uk). People with emails ending '
                                                                        'in these domains will join automatically'}
 
-        self.fields['add_banned'].widget.attrs = {'rows': 2,
+        self.fields['add_banned'].widget.attrs = {'rows': 3,
                                                   'placeholder': 'enter comma/tab/line seperated email addresses'
                                                                  ' to ban'}
 
