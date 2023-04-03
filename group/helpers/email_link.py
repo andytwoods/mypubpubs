@@ -4,9 +4,9 @@ from urllib import parse
 def generate_message(group):
     message = f"""
     
-    ******POWERED BY www.PubPubs.Pub******
-    ***Visit www.pubpubs.pub/group/{group.uuid}/ to join this group if you were forwarded this message***
-    ***If you already have joined, uou can delete your link to this group there too, or set up a SNOOZE period***
+    ****** POWERED BY www.PubPubs.Pub ******
+    *** Visit www.pubpubs.pub/group/{group.uuid}/ to join this group if you were forwarded this message ***
+    *** If you already have joined, uou can delete your link to this group there too, or set up a SNOOZE period ***
     """
     return message  # '%0D'.join(message.splitlines())
 
