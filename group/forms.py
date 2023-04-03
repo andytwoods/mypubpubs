@@ -5,7 +5,9 @@ from crispy_forms.layout import Layout, Row, Column, Submit, HTML
 from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import HiddenInput
+from django.utils.safestring import mark_safe
 
+from group.helpers.email_link import compose_email_link, generate_message
 from group.model_choices import StatusChoices
 from group.models import Group
 
@@ -90,26 +92,39 @@ class GroupAdminForm(forms.ModelForm):
         my_members = group.members.filter(groupuserthru__status=StatusChoices.ACTIVE)
         members = self.fields['members']
         members.choices = [(u.id, u.email) for u in my_members]
-        members.initial = [u.id for u in my_members]
-        members.help_text = 'Deselect those who you want to stop being members'
+        if len(members.choices) == 0:
+            members.widget = HiddenInput()
+        else:
+            members.initial = [u.id for u in my_members]
+            members.help_text = 'Deselect those who you want to stop being members'
 
         my_asked = group.members.filter(groupuserthru__status=StatusChoices.WAITING_FOR_OK)
         asked_users = [(u.id, u.email) for u in my_asked]
-        self.fields['requested_to_join'].choices = asked_users
-        self.fields['requested_to_join'].help_text = 'Select those who you want to become active members'
+        requested_to_join = self.fields['requested_to_join']
+        if len(asked_users) == 0:
+            requested_to_join.widget = HiddenInput()
+        else:
+            requested_to_join.choices = asked_users
+            requested_to_join.help_text = 'Select those who you want to become active members'
         self.fields['add_people'].widget.attrs = {'rows': 2, 'placeholder': 'enter comma/tab/line seperated email '
                                                                                'addresses to add people to this '
-                                                                               'group.'}
+                                                                               'group'}
+        link = compose_email_link(subject='Link to join group',
+                                  message=generate_message(group),
+                                  field_txt='', email_list=[])
+        self.fields['add_people'].label = mark_safe(f'Add people <small class="text-primary">'
+                                                    f'or <a href="{link}" target="_blank">'
+                                                    f'generate</a> an email to forward with a link</a></small>')
 
         self.fields['safe_domains'].queryset = group.safe_domains.all()
         self.fields['add_safe_domains'].widget.attrs = {'rows': 2,
                                                         'placeholder': 'enter comma/tab/line seperated domains '
                                                                        '(e.g. rhul.ac.uk). People with emails ending '
-                                                                       'in these domains will be automatically added'}
+                                                                       'in these domains will join automatically'}
 
         self.fields['add_banned'].widget.attrs = {'rows': 2,
                                                   'placeholder': 'enter comma/tab/line seperated email addresses'
-                                                                 ' to ban.'}
+                                                                 ' to ban'}
 
         self.helper = FormHelper()
         row_css = 'bg-light rounded shadow mb-3'
@@ -139,7 +154,7 @@ class GroupAdminForm(forms.ModelForm):
             ),
             Row(
                 Column(
-                    Submit("submit", "Update", css_class="my-4 btn-lg"),
+                    Submit("submit", "Save", css_class="my-4 btn-lg"),
                 ),
                 css_class="justify-content-center",
             ),

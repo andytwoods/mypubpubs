@@ -11,7 +11,7 @@ from group.model_choices import StatusChoices
 
 User = get_user_model()
 
-from group.helpers.email import let_new_user_know_added
+from group.helpers.email import let_new_user_know_added, let_new_admin_know_added
 from group.helpers.list_tools import make_list
 
 
@@ -189,6 +189,19 @@ class Group(TimeStampedModel):
 
         return group_user, joined_group
 
+    def add_admin(self, email=None, user: User=None, silent=False):
+        if not user:
+            user, created = User.objects.get_or_create(email=email)
+            if created:
+                user.save()
+        admin_user, made_admin_of_group = GroupAdminThru.objects.get_or_create(user=user, group=self)
+        if made_admin_of_group:
+            admin_user.save()
+            if not silent:
+                let_new_admin_know_added(self, email)
+
+        return admin_user, made_admin_of_group
+
     def check_is_admin(self, user: User):
         exists = GroupAdminThru.objects.filter(user=user, group=self).exists()
         return exists
@@ -200,4 +213,3 @@ class Group(TimeStampedModel):
     def linked_with_group(self, user: User):
         return GroupUserThru.objects.filter(group=self, user=user).exists() or \
             GroupAdminThru.objects.filter(group=self, user=user).exists()
-

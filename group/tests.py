@@ -154,6 +154,17 @@ class TestGroupUserThru(TestCase):
         self.assertEqual(found.count(), 0)
 
 
+class TestGroupAdminThru(TestCase):
+    def test_add_admin(self):
+        group: Group = GroupFactory()
+        user = UserFactory()
+
+        self.assertFalse(group.check_is_admin(user))
+
+        group.add_admin(user.email)
+        self.assertTrue(group.check_is_admin(user))
+
+
 class TestIntegration(TestCase):
 
     def test_user_invited(self):

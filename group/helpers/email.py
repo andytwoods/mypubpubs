@@ -41,3 +41,19 @@ def let_new_user_know_added(group, email, status: StatusChoices):
         html_message=message,
         fail_silently=False,
     )
+
+
+
+def let_new_admin_know_added(group, email):
+
+    subject = f"You have been made an admin of this group: '{group.title}'"
+    message = f'Yay :) Visit { settings.WEBSITE } to edit your membership, or delete your account.'
+
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.EMAIL_SITE,
+        recipient_list=[email],
+        html_message=message,
+        fail_silently=False,
+    )

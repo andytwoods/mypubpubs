@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils.functional import cached_property
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_http_methods
 from django.views.generic import UpdateView
@@ -17,8 +18,9 @@ from group.models import Group, GroupUserThru, GroupAdminThru
 from users.helpers.login_email import send_login_email
 
 
-def group(request, uuid):
-    my_group: Group = Group.objects.get(uuid=uuid)
+def group(request, uuid=None, my_group: Group = None):
+    if not my_group:
+        my_group = Group.objects.get(uuid=uuid)
 
     if request.user.is_authenticated:
         if my_group.linked_with_group(request.user):
@@ -63,7 +65,7 @@ home_context_info = [('group_memberships', StatusChoices.ACTIVE),
                      ('ok_invitation', StatusChoices.INVITED)]
 
 
-#@cache_page(20 * 1) # 20s cache
+# @cache_page(20 * 1) # 20s cache
 def home(request):
     if request.user.is_authenticated:
         context = {'admin_of_groups': GroupAdminThru.admin_of_which_groups(request.user)}
@@ -97,7 +99,7 @@ class GroupPrefs(UpdateView):
     template_name = 'group/edit_group.html'
 
     def get_success_url(self):
-        return reverse('admin-group-edit', kwargs={'uuid': self.kwargs.get('uuid')})
+        return reverse('home')
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_anonymous:
@@ -126,6 +128,27 @@ class GroupPrefs(UpdateView):
         group.add_people(form.data['add_people'])
 
         return outcome
+
+
+class GroupCreate(GroupPrefs):
+
+    template_name = 'group/new_group.html'
+
+    @cached_property
+    def cache_get_object(self):
+        my_group: Group = Group()
+        my_group.save()
+        my_group.add_admin(user=self.request.user, silent=True)
+        return my_group
+    def get_object(self, queryset=None):
+        return self.cache_get_object
+
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_anonymous:
+            messages.error(self.request, 'Oops, you are not logged in.')
+            return redirect('home')
+        _ = self.cache_get_object # just generating the object here
+        return UpdateView.dispatch(self, *args, **kwargs)
 
 
 @login_required
@@ -217,7 +240,7 @@ def htmx_generate_email(request, uuid: str, usertype: str):
         case _:
             raise Exception(f'unknown htmx htmx_generate_email command: {usertype}')
 
-    context = {'a_record_url': a_record_url, 'my_id': f'{_group.uuid}-{usertype}' }
+    context = {'a_record_url': a_record_url, 'my_id': f'{_group.uuid}-{usertype}'}
     return render(request, 'group/generate_email.html', context=context)
 
 

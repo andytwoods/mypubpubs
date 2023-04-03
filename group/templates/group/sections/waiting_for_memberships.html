@@ -8,10 +8,10 @@
                         <h5 class="card-title">{{ member.group.title }}
                         </h5>
                         <p class="card-text">{{ member.group.description }}</p>
-                        <div class="badge bg-dark-subtle d-inline-block mt-2">{{ member.get_status_display }}
+                        <div class="badge bg-dark d-inline-block mt-2">{{ member.get_status_display }}
                         </div>
                         <div class="float-end">
-                            <button class="btn btn-sm btn-danger p-0"
+                            <button class="btn btn-sm p-0 text-danger"
                                     hx-post="{% url 'htmx_group_commands' %}"
                                     hx-vals='{"group_uuid": "{{ member.group.uuid }}", "command": "cancel-join-request"}'
                                     hx-confirm="Are you sure you wish to remove your request to join?"

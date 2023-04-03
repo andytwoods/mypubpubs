@@ -6,6 +6,7 @@ from group import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('group/<uuid:uuid>/', views.group, name='group'),
+    path('group/create/', views.GroupCreate.as_view(), name='create_group'),
     path('group/<uuid:uuid>/edit/', views.GroupPrefs.as_view(), name='admin-group-edit'),
     path('group/<uuid:uuid>/add/<str:email>/', views.add_person, name='accept_person'),
     path('preferences/', views.user_preferences, name='preferences'),
