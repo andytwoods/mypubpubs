@@ -114,7 +114,8 @@ class GroupAdminForm(forms.ModelForm):
                                   field_txt='', email_list=[])
         self.fields['add_people'].label = mark_safe(f'Add people <small class="text-primary">'
                                                     f'or <a href="{link}" target="_blank">'
-                                                    f'generate</a> an email to forward with a link</a></small>')
+                                                    f'generate</a> an email to forward with a one-click '
+                                                    f'joining link</a></small>')
 
         self.fields['safe_domains'].queryset = group.safe_domains.all()
         self.fields['add_safe_domains'].widget.attrs = {'rows': 2,
