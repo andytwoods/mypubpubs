@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.conf import settings
 
 urlpatterns = [
     path('banana/', admin.site.urls),
@@ -13,3 +13,9 @@ urlpatterns = [
     path('accounts/profile/', lambda request: redirect('home', permanent=True)),
     path('captcha/', include('captcha.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        # ...
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]

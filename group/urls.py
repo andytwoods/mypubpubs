@@ -1,6 +1,5 @@
 
-from django.urls import path, include
-from django.conf import settings
+from django.urls import path
 from group import views
 
 urlpatterns = [
@@ -16,9 +15,3 @@ urlpatterns = [
     # path('test-rollbar/', views.test_rollbar)
 
 ]
-
-if settings.DEBUG:
-    urlpatterns += [
-        # ...
-        path('__debug__/', include('debug_toolbar.urls')),
-    ]
