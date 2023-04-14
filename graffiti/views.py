@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.contrib import messages
 from graffiti.forms import UploadImageForm
@@ -32,9 +32,13 @@ def upload(request, vr_id:str):
     context = {
         'form': form,
         'image_file': image_file,
+        'image': graffiti_image.image,
     }
     return render(request, 'graffiti/upload_image.html', context)
 
 
 def img(request, vr_id:str):
-    return HttpResponseRedirect()
+    graffiti_image: GraffitiImage = GraffitiImage.objects.filter(vr_id=vr_id).first()
+    if graffiti_image.image and graffiti_image.image.url:
+        return HttpResponseRedirect(graffiti_image.image.url)
+    raise Http404

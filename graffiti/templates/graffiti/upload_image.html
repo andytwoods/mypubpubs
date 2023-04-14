@@ -24,6 +24,9 @@
 
     {% if image_file != '' %}
         <div class="row">
+        <div>
+        000{{ image.width }}*{{ image.height }}
+        </div>
             <div class="col-6">
                 <img class='img-fluid border shadow' src="{{ image_file }}" alt="Uploaded image available to your VR headset">
             </div>
