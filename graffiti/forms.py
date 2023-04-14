@@ -12,7 +12,7 @@ class UploadImageForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(Column("image", css_class='col-md-4')),
+            Row(Column("image", css_class='col-md-6')),
             Row(
                 Column(
                     Submit("submit", "Upload", css_class="my-4 btn-lg"),
