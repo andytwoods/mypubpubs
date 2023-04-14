@@ -7,7 +7,7 @@
     <h1>Welcome to Graffiti MR!</h1>
     <div>
         <span class="text-danger">This app is very much in 'alpha' -- any content you upload is accessible by the public at large with this web address</span>
-    <br/>
+        <br/>
         <span class="text-danger">Your guess is as good as mine, in terms of the resolution of the image you upload.
             There's currently a 2MB file size limit</span>
 
@@ -22,10 +22,12 @@
         {% crispy form %}
     </div>
 
-    <div class="row">
-        <div class="col-6">
-            <img class='img-fluid' src="{{ image_file }}" alt="Uploaded image available to your VR headset">
+    {% if image_file != '' %}
+        <div class="row">
+            <div class="col-6">
+                <img class='img-fluid' src="{{ image_file }}" alt="Uploaded image available to your VR headset">
+            </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock %}
