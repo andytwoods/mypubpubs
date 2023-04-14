@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'users',
     'group',
+    'graffiti',
     'hijack',
     'hijack.contrib.admin',
 ]
@@ -180,3 +181,6 @@ WEBSITE = 'https://www.pubpub.social'
 
 CAPTCHA_IMAGE_SIZE = (200, 100)
 CAPTCHA_FONT_SIZE = 60
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

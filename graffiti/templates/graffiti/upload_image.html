@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+    <h1>Welcome to Graffiti MR!</h1>
+    <div>
+        <span class="text-danger">This app is very much in 'alpha' -- any content you upload is accessible by the public at large with this web address</span>
+    <br/>
+        <span class="text-danger">Your guess is as good as mine, in terms of the resolution of the image you upload.
+            There's currently a 2MB file size limit</span>
+
+    </div>
+    {% if image_file == '' %}
+        You've not uploaded an image yet
+    {% else %}
+        You can change the image available to your headset by uploading another here
+    {% endif %}
+    <div class="">
+        {% csrf_token %}
+        {% crispy form %}
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <img class='img-fluid' src="{{ image_file }}" alt="Uploaded image available to your VR headset">
+        </div>
+    </div>
+
+{% endblock %}
