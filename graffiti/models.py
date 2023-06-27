@@ -7,9 +7,9 @@ from django.core.exceptions import ValidationError
 
 # https://stackoverflow.com/a/35321718/960471
 def file_size(value):
-    limit = 2 * 1024 * 1024
+    limit = 8 * 1024 * 1024
     if value.size > limit:
-        raise ValidationError('File too large. Size should not exceed 2 MiB.')
+        raise ValidationError(f'File too large. Size should not exceed {limit}MB.')
 
 class GraffitiImage(TimeStampedModel):
     image = models.ImageField(validators=[file_size])
