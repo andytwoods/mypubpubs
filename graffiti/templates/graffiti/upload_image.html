@@ -5,7 +5,7 @@
 
 {% block content %}
     <h1>Welcome to Graffiti MR!</h1>
-    <div>
+    <div class="mb-3">
         <span class="text-danger">This app is very much in 'alpha' -- any content you upload is accessible via anyone
             with this url</span>
         <br/>
@@ -19,7 +19,6 @@
         You can change the image available to your headset by uploading another here
     {% endif %}
     <div class="">
-        {% csrf_token %}
         {% crispy form %}
     </div>
 
