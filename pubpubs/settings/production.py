@@ -44,7 +44,7 @@ LOGGING = {
         "rollbar": {
             "level": "ERROR",
             "filters": ["require_debug_false"],
-            'access_token': '9e18a3b6fccf4cc7875bcb82975fda1e',
+            'access_token': '61e5825a4c034af9819d643daa595b91',
             "environment": "production",
             'root': BASE_DIR,
             'code_version': '1.0',
