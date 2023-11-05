@@ -42,3 +42,7 @@ def img(request, vr_id:str):
     if graffiti_image.image and graffiti_image.image.url:
         return HttpResponseRedirect(graffiti_image.image.url)
     raise Http404
+
+
+def home(request):
+    return render(request, 'graffiti/home.html')

@@ -9,7 +9,6 @@ urlpatterns = [
     path('accounts/', include('mailauth.urls')),
     path('', include('group.urls')),
     path('', include('users.urls')),
-    path('', include('graffiti.urls')),
     path('hijack/', include('hijack.urls')),
     path('accounts/profile/', lambda request: redirect('home', permanent=True)),
     path('captcha/', include('captcha.urls')),

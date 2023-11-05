@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "pubpubs.settings.virtualhostmiddleware.VirtualHostMiddleware",
     'django.middleware.security.SecurityMiddleware',
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",

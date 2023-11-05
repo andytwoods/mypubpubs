@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Terms and Conditions {% endblock %}
+
+{% block content %}
+
+
+<div class="" style="max-width: 980px;"><h1>{{ request.get_host }} TERMS OF USE</h1>
+<p>These terms and conditions govern your use of and participation with {{ request.get_host }}.</p>
+<p><strong>1. DEFINITIONS</strong></p>
+<p><strong>You</strong>&nbsp;means the person agreeing to these Terms of Use</p>
+<p><strong>Platform</strong>&nbsp;means the digital platform {{ request.get_host }} operated and made available by us.</p>
+<p><strong>3. INTELLECTUAL PROPERTY RIGHTS AND USAGE OF THE PLATFORM</strong></p>
+<p>3.1. These terms and conditions do not constitute an assignment or licence of any Intellectual Property Rights in the Platform, except such limited licence as you may reasonably require to access and use the Platform.</p>
+<p>3.2. You agree to use the Platform in accordance with any reasonable use levels we may notify to you from time to time. You may use the Platform only as permitted in these terms and conditions.</p>
+<p>3.3. You confirm that all information you provide to us is accurate, up-to-date, and complete to the best of your knowledge. You understand that your personal data you provide to us may be processed in connection with your use of the Platform. For more information on that, please see our privacy policy at
+    <a href="{{ request.get_host }}{% url 'privacy_policy' %}">{{ request.get_host }}{% url 'privacy_policy' %}</a>.</p>
+<p>3.4. You agree not to abuse your access to the Platform, or make access to your account on the Platform to any third party.</p>
+<p>3.5. You are solely responsible for all use of the Platform through your account. You must keep your user credentials for the Platform confidential. We are not liable for any loss that you may incur if a third party uses your credentials.</p>
+<p>3.6. We may suspend your access to the Platform if you are using the Platform in a manner that is likely to cause harm to us or other users of the Platform, or which is in breach of these terms and conditions.</p>
+<p><strong>4. WARRANTIES &amp; LIABILITY</strong></p>
+<p>4.1. These terms and conditions set out the full extent of our obligations and liabilities in respect of the Platform. To the maximum extent permitted by applicable law, all conditions, warranties or other terms concerning our provision of the Platform to you which might otherwise be implied into a contract are expressly excluded.</p>
+<p>4.2. We do not represent or warrant that your use of the Platform will be uninterrupted or error-free, or that the Platform meets any particular standards or expectations. Your use of the Platform is at your sole risk. Our entire liability to you under these terms and conditions in any way whatsoever shall be limited to £10.</p>
+<p>4.3. Nothing in these terms and conditions will (a) limit or exclude the liability of a party for death or personal injury resulting from negligence; (b) limit or exclude the liability of a party for fraud or fraudulent misrepresentation by that party; (c) limit any liability of a party in any way that is not permitted under applicable law; or (d) exclude any liability of a party that may not be excluded under applicable law.</p>
+<p>4.4. We will not be liable to you in respect of any special, indirect or consequential loss or damage.</p>
+<p>4.5. You hereby indemnify us and undertake to keep us indemnified against all and any liabilities, losses, damages, expenses and costs (including legal expenses and amounts paid in settlement of any demand, action or claim) arising, directly or indirectly, out of a breach by you of any of your obligations under these terms and conditions.</p>
+<p><strong>5. TERMINATION</strong></p>
+<p>5.1. These terms and conditions may be terminated immediately by either party for failure of the other party to comply with any material term of these terms and conditions, unless the failure to comply has been remedied within 30 days of notification of such failure.</p>
+<p><strong>6. OTHER PROVISIONS</strong></p>
+<p>6.1. We are entitled to amend or vary these terms and conditions from time to time at our sole discretion. We will notify you of any change which materially affects your rights and obligations.</p>
+<p>6.2. We are entitled to assign or license all of the rights granted to us under these terms and conditions to any third party. You shall not be entitled to assign or sublicense your rights under these terms and conditions.</p>
+<p>6.3. If any provision or part-provision of these terms and conditions is or becomes invalid, illegal or unenforceable, it shall be deemed modified to the minimum extent necessary to make it valid, legal and enforceable. If such modification is not possible, the relevant provision or part-provision shall be deemed deleted. Any modification to or deletion of a provision or part-provision under this section shall not affect the validity and enforceability of the rest of these terms and conditions.</p>
+<p>6.4. These terms and conditions and the documents referred to in them constitute the entire agreement between the parties and supersedes and extinguishes all previous agreements, promises, assurances, warranties, representations and understandings between them, whether written or oral, relating to its subject matter.</p>
+<p>6.5. These terms and conditions shall be governed by the laws of England and the parties submit to the exclusive jurisdiction of the courts of England in relation to any disputes arising under them.</p></div>
+
+{% endblock content %}

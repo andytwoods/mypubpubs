@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block css %}
+    <style>
+
+        .bg-light {
+            background-color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .btn-outline-dark {
+            background-color: rgba(255, 255, 255, 0.3) !important;
+        }
+    </style>
+{% endblock css %}
+
+{% block content %}
+
+    <section class="py-5">
+        <div class="container p-2 rounded">
+            <h1 class="bg-light ">Welcome pubpub.social</h1>
+
+            <ul>
+                <li>Create self-managing email groups</li>
+                <li>Free (as in beer) for the foreseeable future</li>
+                <li>Click a button, a draft email pops up in your email software
+                    <a class='btn btn-sm btn-outline-primary my-0' target='_blank' href='{{ email_link }}'>try it!</a>
+                </li>
+            </ul>
+
+            <div class="mt-4">
+                <a class="btn btn-primary" href="{% url 'login' %}">Log In</a>
+                <a class="btn btn-primary" href="{% url 'signup' %}">Sign
+                    Up</a>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-sm-6">
+                    <div class="card bg-light shadow mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Why</h5>
+                            <ul>
+                                <li>It's hard to not forget someone with copy/paste mailing lists</li>
+                                <li>Easily sign-up or leave lists via links at the bottom of every draft email</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="card bg-light shadow mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">About</h5>
+                            <ul>
+                                <li>Originally created to help manage the ever expanding staff pub-list at <a
+                                        href="https://www.royalholloway.ac.uk/" target="_blank">Royal Holloway,
+                                    University of
+                                    London</a></li>
+                                <li>Developed mostly over one hectic, fun, weekend at <a href="https://royalhackaway.com/"
+                                                                            target="_blank">Royal HackAway</a>
+                                    (annual hackathon at Royal Holloway)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="tsparticles" style="width:100%; height:100%; z-index: -1;"></div>
+    <script src="{% static 'js/tsparticles.bundle.min.js' %}"></script>
+    <script>
+
+        var particles;
+        tsParticles
+            .loadJSON("tsparticles", "{% static 'js/particles.json' %}")
+            .then(container => {
+                console.log("callback - tsparticles config loaded");
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    </script>
+
+
+
+
+{% endblock content %}
