@@ -12,8 +12,6 @@ from django.conf import settings
 
 urlpatterns = [
     path("", views.home, name='graffiti_home'),
-    path("gmr/<str:vr_id>/", views.upload, name="home"),
-    path("gmr/<str:vr_id>/img/", views.img, name="img"),
     path("<str:vr_id>/", views.upload, name="graffiti_upload"),
     path("<str:vr_id>/img/", views.img, name="graffiti_image"),
     path('banana/', admin.site.urls),
