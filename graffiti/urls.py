@@ -19,8 +19,8 @@ urlpatterns = [
     path('hijack/', include('hijack.urls')),
     path('accounts/profile/', lambda request: redirect('home', permanent=True)),
     path('captcha/', include('captcha.urls')),
-    path("privacy-policy/", TemplateView.as_view(template_name='privacy_policy.html'), name='privacy_policy'),
-    path("terms-and-conditions/", TemplateView.as_view(template_name='terms_and_conditions.html'),
+    path("legal/privacy-policy/", TemplateView.as_view(template_name='graffiti/privacy_policy.html'), name='privacy_policy'),
+    path("legal/terms-and-conditions/", TemplateView.as_view(template_name='graffiti/terms_and_conditions.html'),
          name='terms_and_conditions'),
 ]
 
