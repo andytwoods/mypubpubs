@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     'group',
     'graffiti',
+    'academic_scheduler',
     'hijack',
     'hijack.contrib.admin',
 ]

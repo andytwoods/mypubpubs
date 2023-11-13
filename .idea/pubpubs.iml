@@ -27,6 +27,7 @@
         <option value="$MODULE_DIR$/templates" />
         <option value="$MODULE_DIR$/group/templates" />
         <option value="$MODULE_DIR$/graffiti/templates" />
+        <option value="$MODULE_DIR$/academic_scheduler/templates" />
       </list>
     </option>
   </component>

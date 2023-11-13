@@ -1,8 +1,6 @@
-from django.urls import path
 from django.views.generic import TemplateView
 
 from . import views
-
 
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -19,9 +17,11 @@ urlpatterns = [
     path('hijack/', include('hijack.urls')),
     path('accounts/profile/', lambda request: redirect('home', permanent=True)),
     path('captcha/', include('captcha.urls')),
-    path("legal/privacy-policy/", TemplateView.as_view(template_name='graffiti/privacy_policy.html'), name='privacy_policy'),
+    path("legal/privacy-policy/", TemplateView.as_view(template_name='graffiti/privacy_policy.html'),
+         name='privacy_policy'),
     path("legal/terms-and-conditions/", TemplateView.as_view(template_name='graffiti/terms_and_conditions.html'),
          name='terms_and_conditions'),
+    path('academic/scheduler/', include('academic_scheduler.urls')),
 ]
 
 if settings.DEBUG:
