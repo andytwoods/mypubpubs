@@ -31,29 +31,29 @@
                 </div>
                 <div class="col">
                     <h5>Choose the first class day of your semester.</h5>
-
-                    <select name="start-month" class="ck mb1 field">
-                        {% for month in months %}
-                            <option value="{{ month }}" {% if forloop.first %}selected{% endif %}>{{ month }}</option>
-                        {% endfor %}
-                    </select>
                     <select name="start-day" class="ck mb1 field">
                         {% for day in ddays %}
                             <option value="{{ day }}" {% if forloop.first %}selected{% endif %}>{{ day }}</option>
                         {% endfor %}
                     </select>
+                    <select name="start-month" class="ck mb1 field">
+                        {% for month in months %}
+                            <option value="{{ month }}" {% if forloop.first %}selected{% endif %}>{{ month }}</option>
+                        {% endfor %}
+                    </select>
+
                 </div>
                 <div class="col">
 
                     <h5>Choose the last class day of your semester.</h5>
-                    <select name="last-month" class="ck mb1 field">
-                        {% for month in months %}
-                            <option value="{{ month }}" {% if forloop.last %}selected{% endif %}>{{ month }}</option>
-                        {% endfor %}
-                    </select>
                     <select name="last-day" class="ck mb1 field">
                         {% for day in ddays %}
                             <option value="{{ day }}" {% if forloop.first %}selected{% endif %}>{{ day }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="last-month" class="ck mb1 field">
+                        {% for month in months %}
+                            <option value="{{ month }}" {% if forloop.last %}selected{% endif %}>{{ month }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="col">
                     <h5>Do you want week numbers?</h5>
 
-                      <input type="checkbox" name="week_numbers" value="Yes" checked>Yes</input><br>
+                    <input type="checkbox" name="week_numbers" value="Yes" checked>Yes</input><br>
                 </div>
                 <button type="submit" class="btn btn-primary my-4">Submit</button>
 
