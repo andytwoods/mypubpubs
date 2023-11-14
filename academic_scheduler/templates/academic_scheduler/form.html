@@ -1,4 +1,4 @@
-{% include 'graffiti/base.html' %}
+{% extends 'graffiti/base.html' %}
 
 
 {% block head %}
@@ -12,84 +12,84 @@
 
 {% endblock %}
 {% block content %}
-    <div class="container">
-        <h1>Generic Syllabus Maker</h1>
 
-        <p>Fill out the form to receive a list of all the dates when your course will meet during the specified
-            semester.</p>
-        <div class="row">
+    <h1>Generic Syllabus Maker</h1>
 
-            <form method="post"> {% csrf_token %}
-                <div class="col">
-                    <h5>Choose the year of your semester.</h5>
+    <p>Fill out the form to receive a list of all the dates when your course will meet during the specified
+        semester.</p>
+    <div class="row">
 
-                    <select name="year" class="ck mb1 field">
-                        {% for year in years %}
-                            <option value="{{ year }}">{{ year }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
-                    <h5>Choose the first class day of your semester.</h5>
-                    <select name="start-day" class="ck mb1 field">
-                        {% for day in ddays %}
-                            <option value="{{ day }}" {% if forloop.first %}selected{% endif %}>{{ day }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="start-month" class="ck mb1 field">
-                        {% for month in months %}
-                            <option value="{{ month }}" {% if forloop.first %}selected{% endif %}>{{ month }}</option>
-                        {% endfor %}
-                    </select>
+        <form method="post"> {% csrf_token %}
+            <div class="col">
+                <h5>Choose the year of your semester.</h5>
 
-                </div>
-                <div class="col">
+                <select name="year" class="ck mb1 field">
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <h5>Choose the first class day of your semester.</h5>
+                <select name="start-day" class="ck mb1 field">
+                    {% for day in ddays %}
+                        <option value="{{ day }}" {% if forloop.first %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                </select>
+                <select name="start-month" class="ck mb1 field">
+                    {% for month in months %}
+                        <option value="{{ month }}" {% if forloop.first %}selected{% endif %}>{{ month }}</option>
+                    {% endfor %}
+                </select>
 
-                    <h5>Choose the last class day of your semester.</h5>
-                    <select name="last-day" class="ck mb1 field">
-                        {% for day in ddays %}
-                            <option value="{{ day }}" {% if forloop.first %}selected{% endif %}>{{ day }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="last-month" class="ck mb1 field">
-                        {% for month in months %}
-                            <option value="{{ month }}" {% if forloop.last %}selected{% endif %}>{{ month }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
+            </div>
+            <div class="col">
 
-                    <h5>Check all the days your course meets.</h5>
+                <h5>Choose the last class day of your semester.</h5>
+                <select name="last-day" class="ck mb1 field">
+                    {% for day in ddays %}
+                        <option value="{{ day }}" {% if forloop.first %}selected{% endif %}>{{ day }}</option>
+                    {% endfor %}
+                </select>
+                <select name="last-month" class="ck mb1 field">
+                    {% for month in months %}
+                        <option value="{{ month }}" {% if forloop.last %}selected{% endif %}>{{ month }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
 
-                    <input type="checkbox" name="days" value="Monday" checked>Monday</input><br>
-                    <input type="checkbox" name="days" value="Tuesday">Tuesday</input><br>
-                    <input type="checkbox" name="days" value="Wednesday">Wednesday</input><br>
-                    <input type="checkbox" name="days" value="Thursday">Thursday</input><br>
-                    <input type="checkbox" name="days" value="Friday">Friday</input><br>
-                    <input type="checkbox" name="days" value="Saturday">Saturday</input>
-                    <input type="checkbox" name="days" value="Sunday">Sunday</input><br>
-                </div>
-                <div class="col">
-                    <h5>Choose your date format.</h5>
+                <h5>Check all the days your course meets.</h5>
 
-                    <select name="format" class="block col-12 ck mb1 field" style="max-width:300px;">
-                        {% for format in formats %}
-                            <option value="{{ format }}" {% if forloop.last %}selected{% endif %}>{{ format }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
-                    <h5>Do you want week numbers?</h5>
+                <input type="checkbox" name="days" value="Monday" checked>Monday</input><br>
+                <input type="checkbox" name="days" value="Tuesday">Tuesday</input><br>
+                <input type="checkbox" name="days" value="Wednesday">Wednesday</input><br>
+                <input type="checkbox" name="days" value="Thursday">Thursday</input><br>
+                <input type="checkbox" name="days" value="Friday">Friday</input><br>
+                <input type="checkbox" name="days" value="Saturday">Saturday</input>
+                <input type="checkbox" name="days" value="Sunday">Sunday</input><br>
+            </div>
+            <div class="col">
+                <h5>Choose your date format.</h5>
 
-                    <input type="checkbox" name="week_numbers" value="Yes" checked>Yes</input><br>
-                </div>
-                <button type="submit" class="btn btn-primary my-4">Submit</button>
+                <select name="format" class="block col-12 ck mb1 field" style="max-width:300px;">
+                    {% for format in formats %}
+                        <option value="{{ format }}" {% if forloop.last %}selected{% endif %}>{{ format }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <h5>Do you want week numbers?</h5>
 
-            </form>
+                <input type="checkbox" name="week_numbers" value="Yes" checked>Yes</input><br>
+            </div>
+            <button type="submit" class="btn btn-primary my-4">Submit</button>
 
-        </div>
-        <p class="mb-5">Originally created by <a href="http://wcm1.web.rice.edu">Caleb McDaniel</a>, <a
-                href="https://github.com/wcaleb/ricescheduler">GitHub</a>. Modified to work with Django by Andy Woods.
-        </p>
+        </form>
+
     </div>
+    <p class="mb-5">Originally created by <a href="http://wcm1.web.rice.edu">Caleb McDaniel</a>, <a
+            href="https://github.com/wcaleb/ricescheduler">GitHub</a>. Modified to work with Django by Andy Woods.
+    </p>
+
 {% endblock content %}
