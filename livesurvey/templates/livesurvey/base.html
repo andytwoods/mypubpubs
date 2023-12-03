@@ -1,0 +1,116 @@
+{% load static i18n django_htmx cache %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Online Lab{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+
+
+    {% block rollbar %}
+        {% if not debug %}
+        {% endif %}
+    {% endblock rollbar %}
+
+    {% include 'favicon.html' %}
+
+    {% if debug %}
+        <script>
+            if (typeof window.htmx !== "undefined") {
+                htmx.on("htmx:afterSettle", function (detail) {
+                    if (
+                        typeof window.djdt !== "undefined"
+                        && detail.target instanceof HTMLBodyElement
+                    ) {
+                        djdt.show_toolbar();
+                    }
+                });
+            }
+        </script>
+    {% endif %}
+
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap_theme.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/fontawesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/brands.min.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/solid.min.css' %}" rel="stylesheet">
+    <link href="{% static 'project.css' %}" rel="stylesheet">
+
+    {% block css %}
+    {% endblock %}
+
+    {% block head %}
+    {% endblock %}
+
+
+</head>
+
+<body class="d-flex flex-column min-vh-100" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<div class="bgImageContainer"></div>
+{% block menu %}
+    <header>
+
+    </header>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="custom-alert alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible wow bounce"
+                 role="alert">
+                <button type="button" class="d-inline-block btn btn-small btn-transparent p-0 m-0 mr-3"
+                        data-dismiss="alert"
+                        aria-label="Close">
+                    <span aria-hidden="true" class="h2">&times;</span>
+                </button>
+                <span class="h6">
+      {{ message }}
+    </span>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+
+<div class="container mt-5 main-element">
+    <div class="mb-3">
+        {% block heading %}
+        {% endblock heading %}
+    </div>
+
+
+    {% block content %}
+    {% endblock content %}
+</div>
+
+
+{% block modal %}{% endblock modal %}
+
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/sweetalert2@11.js' %}"></script>
+<script src="{% static 'js/hyperscript.min.js' %}"></script>
+<script src="{% static 'js/htmx.min.js' %}"></script>
+<script src="{% static 'project.js' %}"></script>
+{% block javascript %}
+{% endblock javascript %}
+
+<div id="modal" class="modal fade">
+  <div id="dialog" class="modal-dialog" hx-target="this"></div>
+</div>
+
+{% cache 500 footer %}
+    {% block footer %}
+        {% include 'footer.html' %}
+    {% endblock %}
+{% endcache cache footer %}
+
+</body>
+
+</html>

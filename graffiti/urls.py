@@ -9,6 +9,7 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
+    path('livesurvey/', include('livesurvey.urls')),
     path("", views.home, name='graffiti_home'),
     path("<str:vr_id>/", views.upload, name="graffiti_upload"),
     path("<str:vr_id>/img/", views.img, name="graffiti_image"),
@@ -22,6 +23,7 @@ urlpatterns = [
     path("legal/terms-and-conditions/", TemplateView.as_view(template_name='graffiti/terms_and_conditions.html'),
          name='terms_and_conditions'),
     path('academic/scheduler/', include('academic_scheduler.urls')),
+
 ]
 
 if settings.DEBUG:

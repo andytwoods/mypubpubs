@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'group',
     'graffiti',
     'academic_scheduler',
+    'livesurvey.apps.LivesurveyConfig',
     'hijack',
     'hijack.contrib.admin',
 ]

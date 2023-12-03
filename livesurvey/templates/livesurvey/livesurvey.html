@@ -1,0 +1,12 @@
+{% extends "livesurvey/base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    {% for form in forms %}
+        {% crispy form %}
+
+    {% endfor %}
+
+{% endblock content %}
