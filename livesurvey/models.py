@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from django_extensions.db.models import TimeStampedModel
 from django.utils.translation import gettext_lazy as _
 
+
 class Graph(models.Model):
     class GraphType(models.TextChoices):
         BAR = "BA", _("Bar chart")
@@ -13,13 +14,15 @@ class Graph(models.Model):
 
     # dv via foreignkey(Question) related_name
     iv1 = models.ForeignKey('Question', on_delete=models.PROTECT, related_name='iv1')
-    iv2 = models.ForeignKey('Question', on_delete=models.PROTECT,related_name='iv2')
+    iv2 = models.ForeignKey('Question', on_delete=models.PROTECT, related_name='iv2')
+
 
 class Question(models.Model):
     options = models.JSONField(default=dict)
     graph = models.ForeignKey(Graph, null=True, blank=True, on_delete=models.PROTECT, related_name='dv')
     text = models.TextField()
     survey = models.ForeignKey('Survey', on_delete=models.CASCADE, related_name='questions')
+
 
 class Survey(models.Model):
     slug = models.SlugField(unique=True)
@@ -30,15 +33,20 @@ class Survey(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+
 class Participant(TimeStampedModel):
     session_id = models.CharField(max_length=32)
-    survey = models.ForeignKey('Survey', on_delete=models.CASCADE)
+
+
+class ParticipantFormData(TimeStampedModel):
     data = models.JSONField(default=dict)
+    form = models.CharField(max_length=64, primary_key=True)
+    survey = models.ForeignKey('Survey', on_delete=models.CASCADE)
+    participant = models.ForeignKey('Participant', on_delete=models.CASCADE)
 
     @classmethod
-    def update_row(cls, session_id, survey: Survey, post_data: dict):
-        p: Participant
-        p, created = cls.objects.get_or_create(session_id=session_id, survey=survey)
-        p.data.update(post_data)
+    def update_row(cls, participant: Participant, survey: Survey, form_name: str, form_data: dict):
+        p: ParticipantFormData
+        p, created = cls.objects.get_or_create(participant=participant, survey=survey, form=form_name)
+        p.data = form_data
         p.save()
-

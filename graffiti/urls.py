@@ -9,11 +9,11 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
+    path('banana/', admin.site.urls),
     path('livesurvey/', include('livesurvey.urls')),
     path("", views.home, name='graffiti_home'),
     path("<str:vr_id>/", views.upload, name="graffiti_upload"),
     path("<str:vr_id>/img/", views.img, name="graffiti_image"),
-    path('banana/', admin.site.urls),
     path('accounts/', include('mailauth.urls')),
     path('hijack/', include('hijack.urls')),
     path('accounts/profile/', lambda request: redirect('home', permanent=True)),
