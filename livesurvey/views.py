@@ -56,8 +56,7 @@ def survey_post(request, survey_slug, form_name):
     try:
         my_survey = Survey.objects.get(slug=survey_slug)
     except Survey.DoesNotExist:
-
-        my_survey = Survey(slug=survey_slug, title='local host demo survey autocreated')
+        my_survey = Survey(slug=survey_slug, title='autocreated')
         my_survey.save()
 
     session_id = get_session_id(request)
