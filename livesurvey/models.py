@@ -34,19 +34,22 @@ class Survey(models.Model):
         super().save(*args, **kwargs)
 
 
-class Participant(TimeStampedModel):
-    session_id = models.CharField(max_length=32)
-
-
 class ParticipantFormData(TimeStampedModel):
     data = models.JSONField(default=dict)
-    form = models.CharField(max_length=64, primary_key=True)
+    form = models.CharField(max_length=64)
     survey = models.ForeignKey('Survey', on_delete=models.CASCADE)
-    participant = models.ForeignKey('Participant', on_delete=models.CASCADE)
+    session_id = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.session_id + ' ' + self.form + ' ' + str(self.data)
 
     @classmethod
-    def update_row(cls, participant: Participant, survey: Survey, form_name: str, form_data: dict):
+    def update_row(cls, session_id, survey: Survey, form_name: str, form_data: dict):
         p: ParticipantFormData
-        p, created = cls.objects.get_or_create(participant=participant, survey=survey, form=form_name)
+        p, created = cls.objects.get_or_create(session_id=session_id, survey=survey, form=form_name)
         p.data = form_data
         p.save()
+
+    @classmethod
+    def chart_data(cls, survey: Survey, form_name):
+        return  list(cls.objects.filter(survey=survey, form=form_name).values_list('data', flat=True))

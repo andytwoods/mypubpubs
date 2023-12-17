@@ -5,14 +5,7 @@ import factory
 from factory.django import DjangoModelFactory
 from factory.fuzzy import FuzzyDateTime, FuzzyInteger, FuzzyText
 
-from livesurvey.models import Participant, Survey
-
-
-class ParticipantFactory(DjangoModelFactory):
-    session_id = FuzzyText(length=32)
-
-    class Meta:
-        model = Participant
+from livesurvey.models import Survey, ParticipantFormData
 
 
 class SurveyFactory(DjangoModelFactory):
@@ -21,3 +14,12 @@ class SurveyFactory(DjangoModelFactory):
 
     class Meta:
         model = Survey
+
+
+class ParticipantFormDataFactory(DjangoModelFactory):
+    survey = factory.SubFactory(SurveyFactory)
+    form = FuzzyText(length=10)
+    session_id = FuzzyText(length=32)
+
+    class Meta:
+        model = ParticipantFormData

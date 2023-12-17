@@ -1,35 +1,48 @@
 import random
 import string
 
+import numpy
 from django.test import TestCase
 
-from livesurvey.factories import SurveyFactory
-from livesurvey.models import Participant, Survey
+from livesurvey.factories import SurveyFactory, ParticipantFormDataFactory
+from livesurvey.models import ParticipantFormData
+from livesurvey.tools import gen_bounds, histogram_data, extract_dv, histogram_labels
 
 
 def gen_session_id():
     return random.choices(string.ascii_letters + string.digits, k=32)
 
 
+class TestParticipantFormData(TestCase):
+    def test_chart_data(self):
+        survey = SurveyFactory()
+        form_name = 'my_form'
+        form_field = 'bla'
+        data = [1,2,1,2]
+        for val in data:
+            data = {form_field: val}
+            p = ParticipantFormDataFactory(survey=survey,
+                                       data=data,
+                                       form=form_name)
 
-class ParticipantFactory(TestCase):
-    def test_add_data__new(self):
-        s: Survey = SurveyFactory()
+        chart_data = ParticipantFormData.chart_data(survey=survey, form_name=form_name)
+        self.assertCountEqual(chart_data, [{'bla': 1}, {'bla': 2}, {'bla': 1}, {'bla': 2}])
 
-        session_id = gen_session_id()
-        post_data = {'a': 1}
+    def test_extract_dv(self):
+        outcome = extract_dv([{'bla': 1}, {'bla': 2}, {'bla': 1}, {'bla': 2}], 'bla')
+        self.assertEquals(outcome, [1,2,1,2])
 
-        Participant.update_row(session_id=session_id, survey=s, post_data=post_data)
+        # no exception if missing key
+        outcome = extract_dv([{'bla': 1}, {'not_here': 2}, {'bla': 1}, {'bla': 2}], 'bla')
+        self.assertEquals(outcome, [1,1,2])
 
-        found: Participant = Participant.objects.get(session_id=session_id)
-        self.assertIsNotNone(found)
+    def test_histogram_labels(self):
+        outcome = histogram_labels([1,3,5,7])
+        self.assertEquals(outcome, ['1 - 3', '3 - 5', '5 - 7'])
 
-        self.assertEquals(found.data['a'], post_data['a'])
 
-
-        Participant.update_row(session_id=session_id, survey=s, post_data={'b': 2})
-        found.refresh_from_db()
-
-        self.assertEquals(found.data['a'], post_data['a'])
-        self.assertEquals(found.data['b'], 2)
-
+class TestGenBounds(TestCase):
+    def test_gen_bounds(self):
+        data = [1,2,3,4,5,5,5,6,7,8]
+        outcome = histogram_data(data)
+        print(outcome)
