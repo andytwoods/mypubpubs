@@ -1,2 +1,51 @@
 {{ data|json_script:unique_id }}
-{% block js %} {% endblock js %}
+{% block js %}
+    <script>
+        (function () {
+            var data_element = document.getElementById('{{ unique_id }}');
+
+            var graph_data = JSON.parse(data_element.textContent);
+
+            var mychart_container = document.createElement("canvas");
+            data_element.parentNode.replaceChild(mychart_container, data_element);
+
+            var dataValues = graph_data.vals;
+            var dataLabels = graph_data.labels;
+
+            var myChart = new Chart(mychart_container.getContext('2d'), {
+                type: '{{ graph_type }}',
+                data: {
+                    labels: dataLabels,
+                    datasets: [{
+                        data: dataValues,
+                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function (value, index, ticks) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        {% if a_axis_title %}
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: '{{ x_axis_title }}'
+                                }
+                            }
+                        {% endif %}
+                    }
+                }
+            });
+        }());
+    </script>
+{% endblock js %}

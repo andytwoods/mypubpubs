@@ -46,17 +46,23 @@
     <link href="{% static 'project.css' %}" rel="stylesheet">
 
     {% block css %}
+        <style>
+            .fade-me-out.htmx-swapping {
+                opacity: .5;
+                transition: opacity .5s ease-out;
+            }
+        </style>
     {% endblock %}
 
     {% block head %}
     {% endblock %}
 
-<style>
-    canvas {
-        max-height: 300px;
-        max-width: 300px;
-    }
-</style>
+    <style>
+        canvas {
+            max-height: 300px;
+            max-width: 300px;
+        }
+    </style>
 
 
 </head>
@@ -109,7 +115,7 @@
 {% endblock javascript %}
 
 <div id="modal" class="modal fade">
-  <div id="dialog" class="modal-dialog" hx-target="this"></div>
+    <div id="dialog" class="modal-dialog" hx-target="this"></div>
 </div>
 
 {% cache 500 footer %}

@@ -31,22 +31,29 @@ def graph_post(request, survey: Survey, form_name: str):
     form = get_livesurvey_form(form_name)
     unique_id = uuid.uuid4()
 
-    context = {}
+    context = {'unique_id': unique_id}
     data = ParticipantFormData.chart_data(survey=survey, form_name=form_name)
     data_list = extract_dv(data, form.dv)
 
-    template = ''
+    template = 'livesurvey/partials/partial_singlegraph.html'
 
     if issubclass(form, Histogram):
         data_all, labels = histogram_data(data_list)
-        context.update({'data': {'vals': data_all, 'labels': labels}, 'unique_id': unique_id})
-        template = 'livesurvey/partials/partial_histogram.html'
+        context.update({'data': {'vals': data_all,
+                                 'labels': labels},
+                        'x_axis_title': 'Age range',
+                        'graph_type': 'bar',
+                        })
+
     elif issubclass(form, Pie):
         dv_element = form.base_fields[form.dv]
         choices = dv_element.choices
         data_all, labels = pie_data(data_list, choices)
-        context.update({'data': {'vals': data_all, 'labels': labels}, 'unique_id': unique_id})
-        template = 'livesurvey/partials/partial_pie.html'
+        context.update({'data': {'vals': data_all,
+                                 'labels': labels},
+                        'graph_type': 'pie',
+                        })
+
     return render(request, template, context=context)
 
 

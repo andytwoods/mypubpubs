@@ -18,9 +18,12 @@ class Pie(ChartBase):
 
 class HtmxFormHelper(FormHelper):
 
+    form_class = "fade-me-out"
+
     def __init__(self, form=None):
         super().__init__(form)
         self.attrs['hx-post'] = f'{form.__class__.__name__}'
+        self.attrs['hx-swap'] ="outerHTML swap:1s"
 
 
 class DemographicsForm(forms.Form, Histogram):
