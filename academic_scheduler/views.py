@@ -51,7 +51,10 @@ def form_post(request):
         return "The starting date you specified does not exist."
 
     try:
-        last_date = [get(year, last_month, last_day)]
+        end_year = year
+        if last_month < start_month:
+            end_year += 1
+        last_date = [get(end_year, last_month, last_day)]
     except:
         return "The ending date you specified does not exist."
 
