@@ -10,8 +10,8 @@ env = environ.Env()
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 PARENT_DIR = BASE_DIR.parent
 
-environ.Env.read_env(os.path.join(PARENT_DIR, '.env_pubpub'))
-
+env_file = os.path.join(PARENT_DIR, '.env_pubpub')
+environ.Env.read_env(env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -30,8 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
 
-    'mailauth',
-
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.admin',
@@ -44,6 +42,9 @@ INSTALLED_APPS = [
     "captcha",
     # "anymail",
 
+    'allauth',
+    'allauth.account',
+
     'users',
     'group',
     'graffiti',
@@ -53,7 +54,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "pubpubs.settings.virtualhostmiddleware.VirtualHostMiddleware",
     'django.middleware.security.SecurityMiddleware',
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -67,9 +67,11 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
     'hijack.middleware.HijackUserMiddleware',
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
-ROOT_URLCONF = 'pubpubs.urls'
+ROOT_URLCONF = 'graffiti.urls'
 
 TEMPLATES = [
     {
@@ -132,7 +134,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'mailauth.backends.MailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'django.template.context_processors.request',
 )
 
 # Internationalization

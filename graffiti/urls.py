@@ -9,6 +9,7 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
+    path('accounts/', include('allauth.urls')),
     path("", views.home, name='graffiti_home'),
     path("<str:vr_id>/", views.upload, name="graffiti_upload"),
     path("<str:vr_id>/img/", views.img, name="graffiti_image"),

@@ -9,7 +9,7 @@ cookiecutter==1.7.3
 idna==3.3
 Jinja2==3.1.1
 jinja2-time==0.2.0
-lxml==4.9.1
+lxml
 MarkupSafe==2.1.1
 msgpack==1.0.4
 nanoid==2.0.0
@@ -30,7 +30,7 @@ django-permissions-policy==4.15.0
 whitenoise==6.4.0
 django-cors-headers==3.14.0
 django-environ==0.10.0
-django-mail-auth==3.2.1
+django-mail-auth
 django-htmx==1.14.0
 django-extensions==3.2.1
 django-crispy-forms==2.0
