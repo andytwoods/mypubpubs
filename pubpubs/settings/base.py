@@ -44,9 +44,10 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'throttle',
+    'huey.contrib.djhuey',
 
     'users',
-    'group',
     'graffiti',
     'academic_scheduler',
     'hijack',
@@ -135,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'django.template.context_processors.request',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 # Internationalization
@@ -165,10 +166,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
 
-
-
-
-
 DEFAULT_FROM_EMAIL = "pub <pub@pubpub.social>"
 
 EMAIL_SITE = DEFAULT_FROM_EMAIL
@@ -189,3 +186,51 @@ CAPTCHA_FONT_SIZE = 60
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+THROTTLE_ZONES = {
+    'default': {
+        'VARY': 'throttle.zones.RemoteIP',
+        'ALGORITHM': 'fixed-bucket',  # Default if not defined.
+        'BUCKET_INTERVAL': 15 * 60,  # Number of seconds to enforce limit.
+        'BUCKET_CAPACITY': 50,  # Maximum number of requests allowed within BUCKET_INTERVAL
+    },
+}
+
+# Where to store request counts.
+THROTTLE_BACKEND = 'throttle.backends.cache.CacheBackend'
+
+
+# settings.py
+HUEY = {
+    'huey_class': 'huey.SqliteHuey',  # Huey implementation to use.
+    'name': DATABASES['default']['NAME'],  # Use db name for huey.
+    'results': True,  # Store return values of tasks.
+    'store_none': False,  # If a task returns None, do not save to results.
+    'immediate': DEBUG,  # If DEBUG=True, run synchronously.
+    'utc': True,  # Use UTC for all times internally.
+    'blocking': True,  # Perform blocking pop rather than poll Redis.
+    'connection': {
+        'host': 'localhost',
+        'port': 6379,
+        'db': 0,
+        'connection_pool': None,  # Definitely you should use pooling!
+        # ... tons of other options, see redis-py for details.
+
+    },
+    'consumer': {
+        'workers': 1,
+        'worker_type': 'thread',
+        'initial_delay': 0.1,  # Smallest polling interval, same as -d.
+        'backoff': 1.15,  # Exponential backoff using this rate, -b.
+        'max_delay': 10.0,  # Max possible polling interval, -m.
+        'scheduler_interval': 1,  # Check schedule every second, -s.
+        'periodic': True,  # Enable crontab feature.
+        'check_worker_health': True,  # Enable worker health checks.
+        'health_check_interval': 1,  # Check worker health every second.
+    },
+}
+
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False

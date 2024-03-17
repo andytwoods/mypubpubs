@@ -1,12 +1,16 @@
-from django.http import HttpResponseRedirect, Http404
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, Http404, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.contrib import messages
+from throttle.decorators import throttle
+
 from graffiti.forms import UploadImageForm
 from graffiti.models import GraffitiImage
 
 
-# Create your views here.
-def upload(request, vr_id:str):
+@login_required
+@throttle(zone='default')
+def upload(request, vr_id: str):
     graffiti_image: GraffitiImage = GraffitiImage.objects.filter(vr_id=vr_id).first()
     form = None
     if not graffiti_image:
@@ -37,11 +41,23 @@ def upload(request, vr_id:str):
     return render(request, 'graffiti/upload_image.html', context)
 
 
-def img(request, vr_id:str):
+@throttle(zone='default')
+def get_headset_id(headset_id: str):
+    return JsonResponse({'headset_id': headset_id})
+
+
+@throttle(zone='default')
+def img(request, vr_id: str):
     graffiti_image: GraffitiImage = GraffitiImage.objects.filter(vr_id=vr_id).first()
     if graffiti_image.image and graffiti_image.image.url:
         return HttpResponseRedirect(graffiti_image.image.url)
     raise Http404
+
+
+@throttle(zone='default')
+def code(request, vr_id: str):
+    code: str = GraffitiImage.get_or_generate_code(vr_id)
+    return HttpResponse()
 
 
 def home(request):

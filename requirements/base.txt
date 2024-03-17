@@ -39,3 +39,5 @@ django-simple-captcha==0.5.17
 django-hijack==3.3.0
 Django==4.2
 arrow==1.3.0
+django-throttle-requests==0.7.0
+huey==2.5.0
