@@ -218,7 +218,7 @@ HUEY = {
 
     },
     'consumer': {
-        'workers': 1,
+        'workers': 2,
         'worker_type': 'thread',
         'initial_delay': 0.1,  # Smallest polling interval, same as -d.
         'backoff': 1.15,  # Exponential backoff using this rate, -b.

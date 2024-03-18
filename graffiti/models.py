@@ -7,10 +7,10 @@ from django.conf import settings
 
 from django.core.exceptions import ValidationError
 
-
+mb_limit = 8
+limit = mb_limit * 1024 * 1024
 # https://stackoverflow.com/a/35321718/960471
 def file_size(value):
-    limit = 8 * 1024 * 1024
     if value.size > limit:
         raise ValidationError(f'File too large. Size should not exceed {limit}MB.')
 
@@ -24,6 +24,7 @@ class Headset(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
     temp_code = models.CharField(max_length=10, default=randcode)
 
+expires_after_x_minutes = 10
 
 class GraffitiImage(TimeStampedModel):
     image = models.ImageField(validators=[file_size])

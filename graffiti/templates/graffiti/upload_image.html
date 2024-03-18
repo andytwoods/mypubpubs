@@ -6,16 +6,15 @@
 {% block content %}
     <h1>Welcome to Graffiti MR!</h1>
     <div class="mb-3">
-        <span class="text-danger">This app is very much in 'alpha' -- any content you upload is accessible via anyone
-            with this url</span>
-        <br/>
-        <span class="text-danger">Your guess is as good as mine, in terms of what resolution of the image should be
-            you upload. There's currently an 8MB file size limit</span>
+        <p class="text-danger">Any content you upload is accessible via anyonewith this url</p>
+        <p class="">There's currently an {{ max_mb }}MB file size limit</p>
 
     </div>
     {% if image_file == '' %}
-        You've not uploaded an image yet
+        You've not uploaded an image yet.
+        Once uploaded your image will be automatically deleted after {{ time_til_deleted }} minutes.
     {% else %}
+        <p class="">After <span class="text-bg-danger text-white  m-1 px-2 "> {{ time_left_til_deleted }} seconds </span> this image will be automatically deleted</p>
         You can change the image available to your headset by uploading another here
     {% endif %}
     <div class="">

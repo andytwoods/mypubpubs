@@ -1,22 +1,29 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.contrib import messages
+from django.utils.timezone import now
 from throttle.decorators import throttle
 
 from graffiti.forms import UploadImageForm
-from graffiti.models import GraffitiImage
+from graffiti.models import GraffitiImage, expires_after_x_minutes, limit, mb_limit, Headset
 
 
 @login_required
 @throttle(zone='default')
 def upload(request, vr_id: str):
-    graffiti_image: GraffitiImage = GraffitiImage.objects.filter(vr_id=vr_id).first()
+    graffiti_image: GraffitiImage = GraffitiImage.objects.filter(headset_id=vr_id).first()
     form = None
-    if not graffiti_image:
-        graffiti_image = GraffitiImage(vr_id=vr_id)
+
     if request.method == 'POST':
         form = UploadImageForm(request.POST, request.FILES)
+        if not graffiti_image:
+            headset, created = Headset.objects.get_or_create(vr_id=vr_id)
+            if created:
+                headset.save()
+            graffiti_image = GraffitiImage(headset=headset)
         if form.is_valid():
             image = form.cleaned_data.get("image")
             if graffiti_image.image:
@@ -31,12 +38,21 @@ def upload(request, vr_id: str):
 
     if not form:
         form = UploadImageForm()
-    image_file = graffiti_image.image.url if graffiti_image.image else ''
+    image_file = graffiti_image.image.url if graffiti_image and graffiti_image.image else None
+
+    if image_file:
+        time_left_til_deleted = int((timedelta(minutes=expires_after_x_minutes) - (now() - graffiti_image.created)).
+                                    total_seconds()) if image_file else ''
+    else:
+        time_left_til_deleted = None
 
     context = {
         'form': form,
         'image_file': image_file,
-        'image': graffiti_image.image,
+        'image': graffiti_image.image if graffiti_image else None,
+        'time_til_deleted': expires_after_x_minutes,
+        'max_mb': mb_limit,
+        'time_left_til_deleted': time_left_til_deleted
     }
     return render(request, 'graffiti/upload_image.html', context)
 
