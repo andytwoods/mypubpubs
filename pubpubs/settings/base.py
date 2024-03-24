@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'throttle',
     'huey.contrib.djhuey',
 
+
     'users',
     'graffiti',
     'academic_scheduler',
@@ -234,3 +235,7 @@ HUEY = {
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
+SIGNUP_EMAIL_ENTER_TWICE = False
+EMAIL_VERIFICATION = False
+
+APPEND_SLASH = True

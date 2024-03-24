@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from graffiti.models import Headset
+
+admin.site.register(Headset)

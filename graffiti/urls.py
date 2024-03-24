@@ -11,11 +11,11 @@ from django.conf import settings
 urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path("", views.home, name='graffiti_home'),
-    path("<str:vr_id>/", views.upload, name="graffiti_upload"),
+
     path("img/<str:vr_id>/", views.img, name="graffiti_image"),
-    path("code/<str:vr_id>/", views.code, name="graffiti_code"),
+
     path("img/<str:vr_id>", views.img, name="graffiti_image"),
-    path("code/<str:vr_id>", views.code, name="graffiti_code"),
+    path("code/<str:vr_id>/", views.code, name="graffiti_code"),
     path('banana/', admin.site.urls),
     path('accounts/', include('mailauth.urls')),
     path('hijack/', include('hijack.urls')),
@@ -26,6 +26,8 @@ urlpatterns = [
     path("legal/terms-and-conditions/", TemplateView.as_view(template_name='graffiti/terms_and_conditions.html'),
          name='terms_and_conditions'),
     path('academic/scheduler/', include('academic_scheduler.urls')),
+
+    path("<str:temp_code>/", views.linkup, name="graffiti_linkup"),
 ]
 
 if settings.DEBUG:

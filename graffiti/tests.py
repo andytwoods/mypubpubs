@@ -25,3 +25,14 @@ class TasksTest(TestCase):
 
         _every_five_mins(now() - timedelta(minutes=5, seconds=1))
         self.assertEquals(GraffitiImage.objects.count(), 0)
+
+class TextModels(TestCase):
+    def test_check_valid(self):
+        headset = Headset(vr_id='my_id')
+        headset.save()
+        image = GraffitiImage(headset=headset)
+        image.save()
+
+        self.assertIsNotNone(GraffitiImage.check_valid(image, now()))
+        self.assertIsNotNone(GraffitiImage.check_valid(image, now() - timedelta(minutes=4, seconds=59)))
+        self.assertIsNotNone(GraffitiImage.check_valid(image, now() - timedelta(minutes=5, seconds=1)))
