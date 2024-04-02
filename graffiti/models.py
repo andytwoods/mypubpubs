@@ -53,16 +53,18 @@ headset_expires_after_x_minutes = 5
 
 
 class GraffitiImage(TimeStampedModel):
+    url = models.URLField(null=True, blank=True)
     image = models.ImageField(validators=[file_size], null=True, blank=True)
     headset = models.ForeignKey(Headset, on_delete=models.CASCADE)
 
     # https://stackoverflow.com/a/58542283/960471
     def delete(self, using=None, keep_parents=False):
         # assuming that you use same storage for all files in this model:
-        storage = self.image.storage
 
-        if storage.exists(self.image.name):
-            storage.delete(self.image.name)
+        if self.image:
+            storage = self.image.storage
+            if storage.exists(self.image.name):
+                storage.delete(self.image.name)
 
         super().delete()
 

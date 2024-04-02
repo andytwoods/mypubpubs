@@ -6,31 +6,26 @@
 {% block content %}
     <h1>Welcome to Graffiti MR!</h1>
     <div class="mb-3">
-        <p class="text-danger">This content is publicly accessible</p>
-        <p class="">There's currently an {{ max_mb }}MB file size limit</p>
+        <p class="">Once you have added a URL, please follow instruction in StencilAR to download that URL to your
+            headset. The software will then be able to download your image.
+            One way of creating a URL for your image is to upload it to dropbox and
+            <a target="_blank" href="https://help.dropbox.com/share/create-and-share-link">ask dropbox to generate a
+                URL</a>. By saving over the same image in dropbox, you can get StencilAR to download each change, without needing to return here!</p>
 
     </div>
-    {% if not image_file %}
-        You've not uploaded an image yet
-        Once uploaded your image will be automatically deleted after {{ time_til_deleted }} minutes.
-    {% else %}
-        <p class="">After <span class="text-bg-danger text-white  m-1 px-2 "> {{ time_left_til_deleted }} seconds </span>
-            this image will be automatically deleted</p>
-        You can change the image available to your headset by uploading another here
-    {% endif %}
+
+    <div class="text-danger">
+        <span>By using this web application, you acknowledge that:</span>
+        <ul>
+            <li>URLs saved here are publicly available</li>
+            <li>Headset IDs are stored alongside URLs to help keep this site safe. All data will also be periodically
+                deleted from our database <a class="btn btn-outline-danger btn-sm my-0 mx-0" hx-get="" hx-confirm="Are you sure?"  >Click to delete all data now</a></li>
+        </ul>
+    </div>
     <div class="">
         {% crispy form %}
     </div>
 
-    {% if image_file  %}
-        <div class="row">
-        <div>
-        {{ image.width }}*{{ image.height }} pixels ({{ image.size|filesizeformat }})
-        </div>
-            <div class="col-6">
-                <img class='img-fluid border shadow' src="{{ image_file }}" alt="Uploaded image available to your VR headset">
-            </div>
-        </div>
-    {% endif %}
+
 
 {% endblock %}
