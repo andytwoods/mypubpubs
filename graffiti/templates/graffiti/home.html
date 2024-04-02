@@ -1,50 +1,63 @@
 {% extends 'graffiti/base.html' %}
+{% load static %}
 
 {% block title %} Home {% endblock %}
 
 {% block content %}
     {% include 'cookieconsent.html' %}
 
- <!-- Hero Section -->
-  <section class="hero-section text-center">
-    <div class="container">
-      <h1 class="display-3 mb-4">Welcome to StencilAR</h1>
-      <p class="lead mb-4">A Bootstrap 5 template for your snazzy projects.</p>
-      <a href="#" class="btn btn-primary btn-lg">Get Started</a>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 mb-4">Welcome to</h1>
+            <img src="{% static 'images/stencilAR_logo.jpg' %}"/>
+            <p>Created by Andy Woods and Jackson Moore</p>
+        </div>
+        <div class="float-end me-3 mt-2">
 
-  <!-- Features Section -->
-  <section class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h2 class="card-title">Feature 1</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-          </div>
+            <a href="https://github.com/andytwoods/StencilAR" target="_blank">
+                <img class="" style="max-width:50px;" src="{% static 'images/github-mark-white.png' %}">
+            </a>
         </div>
-        <div class="col-lg-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h2 class="card-title">Feature 2</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h2 class="card-title">Feature 3</h2>
-              <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-    
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-6  mb-4">
+                    <img class="card-img" src="{% static 'images/stencilAR_a.jpg' %}"/>
+                    <div><a href="https://huggingface.co/ByteDance/SDXL-Lightning">source</a></div>
+                </div>
+                <div class="col-6  mb-4 text-left my-1">
+                    <ul style="text-align: left !important"
+                            class="list-group list-group-flush text-left list-unstyled">
+                        <li><span class="badge bg-primary">step 1</span>  Upload an image</li>
+                        <li><span class="badge bg-primary">step 2</span>  See the real world and your
+                            (now!) transparent image through your headset</li>
+                        <li><span class="badge bg-primary">step 3</span>  Trace your image</li>
+                        <li class=""><a href="https://github.com/andytwoods/StencilAR" target="_blank">
+                            <i class="fa-brands fa-github text-black animate__pulse"></i></a> Opensource, free</li>
+                    </ul>
+                </div>
+                <div class="col-6  mb-4">
+                    <img class="card-img" src="{% static 'images/stencilAR_b.jpg' %}"/>
+                    <div><a href="https://huggingface.co/ByteDance/SDXL-Lightning">source</a></div>
+
+                </div>
+                <div class="col-6  mb-4 text-left my-1">
+                    <ul style="text-align: left !important"
+                            class="list-group list-group-flush text-left list-unstyled">
+                        <li><a href="https://github.com/andytwoods/StencilAR" target="_blank">
+                            <i class="fa-brands fa-github text-black"></i></a> Contributions most welcome!</li>
+                        <li><i class="fa-solid fa-eye"></i> We would love to see your creations</li>
+                        <li><i class="fa-solid fa-share"></i> Please spread the word</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 {% endblock content %}

@@ -8,10 +8,19 @@
 
 
 .hero-section {
-    background-image: url('https://via.placeholder.com/1920x1080');
+    background-color: rgba(128, 128, 128, 0.44);
     background-size: cover;
     background-position: center;
     color: #fff;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 50px;
+    padding-bottom: 70px;
+}
+
+.card-img {
+    max-width: 300px;
+}
+
+li {
+    margin-top:5px;
+    font-size: 1.1rem;
 }

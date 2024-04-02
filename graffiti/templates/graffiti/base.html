@@ -98,11 +98,12 @@
 <script src="{% static 'js/hyperscript.min.js' %}"></script>
 <script src="{% static 'js/htmx.min.js' %}"></script>
 <script src="{% static 'project.js' %}"></script>
+
 {% block javascript %}
 {% endblock javascript %}
 
 <div id="modal" class="modal fade">
-  <div id="dialog" class="modal-dialog" hx-target="this"></div>
+    <div id="dialog" class="modal-dialog" hx-target="this"></div>
 </div>
 
 {% cache 500 footer %}
