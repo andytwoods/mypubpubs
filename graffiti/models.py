@@ -20,8 +20,12 @@ def file_size(value):
 
 
 code_length = 6
+
+
 def randcode():
-    return ''.join(random.sample(string.digits + string.ascii_lowercase, code_length))
+    # I HATE mixing up 0o and i1
+    code_alphabet = ''.split('23456789abcdefghjkmnpqrstuvwxyz')
+    return ''.join(random.sample(code_alphabet, code_length))
 
 
 class Headset(TimeStampedModel):
@@ -32,6 +36,8 @@ class Headset(TimeStampedModel):
     @classmethod
     def get_or_generate_code(cls, vr_id: str):
         headset, created = Headset.objects.get_or_create(vr_id=vr_id)
+        if created:
+            headset.save()
         return headset
 
     def save(self, **kwargs):
@@ -68,7 +74,6 @@ class GraffitiImage(TimeStampedModel):
 
         super().delete()
 
-
     @classmethod
     def check_valid(cls, image, current_datetime=now()):
         if image is None:
@@ -80,8 +85,8 @@ class GraffitiImage(TimeStampedModel):
         return image
 
     @classmethod
-    def retrieve_and_check_valid(cls, vr_id):
-        image = cls.objects.filter(vr_id=vr_id).first()
+    def retrieve_and_check_valid(cls, headset: Headset):
+        image = cls.objects.filter(headset=headset).first()
         return GraffitiImage.check_valid(image)
 
 
