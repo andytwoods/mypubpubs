@@ -24,8 +24,9 @@ code_length = 6
 
 def randcode():
     # I HATE mixing up 0o and i1
-    code_alphabet = ''.split('23456789abcdefghjkmnpqrstuvwxyz')
-    return ''.join(random.sample(code_alphabet, code_length))
+    code_alphabet = list('23456789abcdefghjkmnpqrstuvwxyz')
+    code_str = ''.join(random.sample(code_alphabet, code_length))
+    return code_str
 
 
 class Headset(TimeStampedModel):
