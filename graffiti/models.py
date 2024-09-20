@@ -87,6 +87,7 @@ class GraffitiImage(TimeStampedModel):
 
     @classmethod
     def retrieve_and_check_valid(cls, headset: Headset):
+        print(cls.objects.filter(headset=headset),22)
         image = cls.objects.filter(headset=headset).first()
         return GraffitiImage.check_valid(image)
 
