@@ -70,16 +70,19 @@ def linkup(request, temp_code: str):
 def get_headset_id(headset_id: str):
     return JsonResponse({'headset_id': headset_id})
 
+NO_IMAGE_RESPONSE = 'no image'
 
 @throttle(zone='default')
 def img(request, vr_id: str):
-    headset: Headset = Headset.objects.get(vr_id=vr_id)
-    if not headset:
+    try:
+        headset: Headset = Headset.objects.get(vr_id=vr_id)
+    except Headset.DoesNotExist:
         raise Http404
+
     try:
         graffiti_image: GraffitiImage = GraffitiImage.retrieve_and_check_valid(headset)
     except NoImage:
-        return HttpResponse('no image')
+        return HttpResponse(NO_IMAGE_RESPONSE)
     if graffiti_image.url:
         return HttpResponse(graffiti_image.url)
     raise Http404
