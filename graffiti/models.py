@@ -54,6 +54,9 @@ class Headset(TimeStampedModel):
     def check_short_code(cls, temp_code):
         return len(temp_code) == code_length
 
+    def __str__(self):
+        return f'code:{self.temp_code}   id:{self.vr_id}'
+
 
 image_expires_after_x_minutes = 10
 headset_expires_after_x_minutes = 5
