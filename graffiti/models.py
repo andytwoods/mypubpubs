@@ -30,7 +30,7 @@ def randcode():
 
 
 class Headset(TimeStampedModel):
-    vr_id = models.CharField(max_length=20, primary_key=True)
+    vr_id = models.CharField(max_length=64, primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
     temp_code = models.CharField(max_length=10, unique=True)
 
