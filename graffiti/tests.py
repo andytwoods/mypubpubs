@@ -125,5 +125,37 @@ class HeadsetProcessTests(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.content.decode('utf-8'), image_url)
 
+class AddImageForm(TestCase):
+    def test_add_image_url(self):
+        headset = Headset(vr_id='headset_id')
+        headset.save()
 
+        image_url = 'https://example.com/image.jpg'
+
+        url = reverse('graffiti_linkup', kwargs={'temp_code': headset.temp_code})
+        response = self.client.post(url, {
+            'url': image_url,
+        })
+        self.assertEquals(response.status_code, 200)
+
+        image = GraffitiImage.objects.filter(headset=headset).first()
+        self.assertEqual(image.url, image_url)
+
+        # let's check that the returned image_url is as expected
+        url = reverse('graffiti_image', kwargs={'vr_id': headset.vr_id})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.content.decode('utf-8'), image_url)
+
+        # let's update the url and check that we get the expected new url
+        image_url2 = 'https://example.com/image2.jpg'
+        url = reverse('graffiti_linkup', kwargs={'temp_code': headset.temp_code})
+        response = self.client.post(url, {
+            'url': image_url2,
+        })
+
+        url = reverse('graffiti_image', kwargs={'vr_id': headset.vr_id})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.content.decode('utf-8'), image_url2)
 
